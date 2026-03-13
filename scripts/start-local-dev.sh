@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────
-# start-local-dev.sh — Start all services for local development
+# start-local-dev.sh — Start API, UI, and AI services for local development
 # ─────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -121,10 +121,14 @@ fi
 echo ""
 echo "─────────────────────────────────────────────"
 echo ""
-ok "All services started:"
+ok "Services started:"
 echo "   API        : http://localhost:3001"
 echo "   UI         : http://localhost:5173"
 echo "   AI Service : http://localhost:8000"
+echo ""
+warn "Mobile is not started by this script."
+echo "   To start mobile separately:"
+echo "   cd mobile && npx expo start"
 echo ""
 echo "   Press Ctrl+C to stop all services."
 echo ""

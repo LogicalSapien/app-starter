@@ -1,7 +1,9 @@
 /**
  * Centralized configuration using environment variables.
- * Works with Doppler CLI: `doppler run --` or any system that populates process.env.
+ * Works with Doppler CLI (`doppler run --`), .env files, or any system that
+ * populates process.env.
  */
+import "dotenv/config";
 
 export const config = {
   // Server Configuration

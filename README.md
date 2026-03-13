@@ -29,7 +29,7 @@ Plus: RBAC, audit logging, security middleware (Helmet, CORS, CSRF, rate limitin
 - [Node.js](https://nodejs.org) 20+
 - [Python](https://python.org) 3.13+
 - [Docker](https://docker.com) (for PostgreSQL)
-- [Supabase](https://supabase.com) account (free tier works)
+- **[Supabase](https://supabase.com) account (required)** — free tier works. You need SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY. The API and all frontends use Supabase for authentication — a local PostgreSQL alone is not enough. See [docs/SETUP.md](docs/SETUP.md) for step-by-step Supabase setup.
 
 ### 1. Clone
 
@@ -38,13 +38,17 @@ git clone https://github.com/LogicalSapien/app-starter.git
 cd app-starter
 ```
 
-### 2. Start PostgreSQL
+### 2. Create a Supabase project
+
+Go to [supabase.com](https://supabase.com), create a project, and copy your **Project URL**, **anon key**, and **service_role key** from Settings > API. You'll need these in step 3.
+
+### 3. Start PostgreSQL
 
 ```bash
 docker compose up postgres -d
 ```
 
-### 3. Configure environment
+### 4. Configure environment
 
 You can use either **Doppler** (recommended for teams) or **.env files** (simpler for local dev). Both work — pick whichever suits you.
 
@@ -108,9 +112,9 @@ Doppler injects env vars at runtime — no `.env` files needed.
 
 </details>
 
-### 4. Run
+### 5. Run
 
-Start all services:
+Start API, UI, and AI services:
 
 ```bash
 # From project root
@@ -123,10 +127,15 @@ Or start individually:
 ```bash
 cd api && npm run dev          # http://localhost:3001
 cd ui && npm run dev           # http://localhost:5173
-cd mobile && npx expo start   # Expo dev tools
 ```
 
-### 5. Verify
+To start mobile (separately — requires Xcode or Android SDK):
+
+```bash
+cd mobile && npx expo start
+```
+
+### 6. Verify
 
 ```bash
 curl http://localhost:3001/api/health
