@@ -68,58 +68,58 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+  },
   container: {
-    flex: 1,
     backgroundColor: "#F9FAFB",
+    flex: 1,
   },
   content: {
     flex: 1,
-    padding: 20,
     gap: 24,
+    padding: 20,
+  },
+  destructive: {
+    color: "#DC2626",
+    fontWeight: "500",
+  },
+  divider: {
+    backgroundColor: "#E5E7EB",
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 16,
+  },
+  row: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  rowChevron: {
+    color: "#9CA3AF",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  rowLabel: {
+    color: "#111827",
+    fontSize: 16,
   },
   section: {
     gap: 8,
   },
   sectionTitle: {
+    color: "#6B7280",
     fontSize: 13,
     fontWeight: "600",
-    color: "#6B7280",
-    textTransform: "uppercase",
     letterSpacing: 0.5,
     paddingHorizontal: 4,
-  },
-  card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-  },
-  rowLabel: {
-    fontSize: 16,
-    color: "#111827",
-  },
-  rowChevron: {
-    fontSize: 16,
-    color: "#9CA3AF",
-    fontWeight: "600",
-  },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#E5E7EB",
-    marginLeft: 16,
-  },
-  destructive: {
-    color: "#DC2626",
-    fontWeight: "500",
+    textTransform: "uppercase",
   },
 });

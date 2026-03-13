@@ -29,56 +29,56 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F9FAFB",
-  },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    padding: 20,
-    gap: 16,
-    paddingTop: 40,
-  },
   avatarPlaceholder: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#2563EB",
     alignItems: "center",
+    backgroundColor: "#2563EB",
+    borderRadius: 40,
+    height: 80,
     justifyContent: "center",
+    width: 80,
   },
   avatarText: {
+    color: "#FFFFFF",
     fontSize: 32,
     fontWeight: "700",
-    color: "#FFFFFF",
-  },
-  email: {
-    fontSize: 16,
-    color: "#374151",
-    fontWeight: "500",
   },
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
+    elevation: 2,
+    gap: 8,
+    marginTop: 8,
     padding: 20,
-    width: "100%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
-    elevation: 2,
-    gap: 8,
-    marginTop: 8,
-  },
-  cardTitle: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#111827",
+    width: "100%",
   },
   cardBody: {
-    fontSize: 15,
     color: "#6B7280",
+    fontSize: 15,
     lineHeight: 22,
+  },
+  cardTitle: {
+    color: "#111827",
+    fontSize: 17,
+    fontWeight: "600",
+  },
+  container: {
+    backgroundColor: "#F9FAFB",
+    flex: 1,
+  },
+  content: {
+    alignItems: "center",
+    flex: 1,
+    gap: 16,
+    padding: 20,
+    paddingTop: 40,
+  },
+  email: {
+    color: "#374151",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });

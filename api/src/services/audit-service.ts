@@ -43,7 +43,7 @@ export async function log(
         action,
         resource,
         resourceId: resourceId ?? null,
-        details: details ?? undefined,
+        details: (details as any) ?? undefined,
         ipAddress,
         userAgent: typeof userAgent === "string" ? userAgent : null,
       },

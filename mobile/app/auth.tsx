@@ -172,58 +172,12 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  header: {
-    marginBottom: 32,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#111827",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#6B7280",
-  },
-  form: {
-    gap: 16,
-  },
-  inputGroup: {
-    gap: 6,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#374151",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#111827",
-    backgroundColor: "#F9FAFB",
-  },
   button: {
+    alignItems: "center",
     backgroundColor: "#2563EB",
     borderRadius: 8,
-    paddingVertical: 14,
-    alignItems: "center",
     marginTop: 8,
+    paddingVertical: 14,
   },
   buttonDisabled: {
     opacity: 0.6,
@@ -232,6 +186,52 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
+  },
+  container: {
+    backgroundColor: "#FFFFFF",
+    flex: 1,
+  },
+  form: {
+    gap: 16,
+  },
+  header: {
+    marginBottom: 32,
+  },
+  input: {
+    backgroundColor: "#F9FAFB",
+    borderColor: "#D1D5DB",
+    borderRadius: 8,
+    borderWidth: 1,
+    color: "#111827",
+    fontSize: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  inputGroup: {
+    gap: 6,
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  label: {
+    color: "#374151",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  subtitle: {
+    color: "#6B7280",
+    fontSize: 16,
+  },
+  title: {
+    color: "#111827",
+    fontSize: 28,
+    fontWeight: "700",
+    marginBottom: 8,
   },
   toggleButton: {
     alignItems: "center",

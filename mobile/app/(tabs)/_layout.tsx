@@ -56,9 +56,9 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   icon: {
+    color: "#6B7280",
     fontSize: 18,
     fontWeight: "700",
-    color: "#6B7280",
   },
   iconFocused: {
     color: "#2563EB",

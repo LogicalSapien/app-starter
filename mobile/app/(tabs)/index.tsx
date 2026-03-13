@@ -47,45 +47,45 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F9FAFB",
-  },
-  scrollContent: {
-    padding: 20,
-    gap: 20,
-  },
-  header: {
-    gap: 4,
-  },
-  greeting: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#111827",
-  },
-  subtitle: {
-    fontSize: 15,
-    color: "#6B7280",
-  },
   card: {
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
+    elevation: 2,
+    gap: 8,
     padding: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
-    elevation: 2,
-    gap: 8,
-  },
-  cardTitle: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#111827",
   },
   cardBody: {
-    fontSize: 15,
     color: "#6B7280",
+    fontSize: 15,
     lineHeight: 22,
+  },
+  cardTitle: {
+    color: "#111827",
+    fontSize: 17,
+    fontWeight: "600",
+  },
+  container: {
+    backgroundColor: "#F9FAFB",
+    flex: 1,
+  },
+  greeting: {
+    color: "#111827",
+    fontSize: 24,
+    fontWeight: "700",
+  },
+  header: {
+    gap: 4,
+  },
+  scrollContent: {
+    gap: 20,
+    padding: 20,
+  },
+  subtitle: {
+    color: "#6B7280",
+    fontSize: 15,
   },
 });
