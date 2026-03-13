@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 module.exports = {
   preset: "react-native",
-  setupFilesAfterSetup: [],
+  setupFilesAfterEnv: [],
   transformIgnorePatterns: [
     "node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@react-navigation|@supabase|zustand)/)",
   ],

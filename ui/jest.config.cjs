@@ -17,7 +17,7 @@ module.exports = {
     '\\.(gif|ttf|eot|svg|png|jpg|jpeg|webp)$':
       '<rootDir>/src/__mocks__/fileMock.js',
   },
-  setupFilesAfterSetup: ['@testing-library/jest-dom'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
     '<rootDir>/src/**/*.{spec,test}.{ts,tsx}',
