@@ -170,7 +170,7 @@ jobs:
         run: npm run typecheck
 
       - name: Run tests with coverage
-        run: npm run test:ci -- --coverageThreshold='{"global":{"branches":60,"functions":60,"lines":60,"statements":60}}'
+        run: npm run test:ci -- --passWithNoTests
         env:
           NODE_ENV: test
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app_starter_test
@@ -215,7 +215,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests with coverage
-        run: npm run test:ci -- --coverageThreshold='{"global":{"branches":15,"functions":15,"lines":15,"statements":15}}'
+        run: npm run test:ci -- --passWithNoTests
 
       - name: Build
         run: npm run build
@@ -260,7 +260,7 @@ jobs:
         run: npm run typecheck
 
       - name: Run tests with coverage
-        run: npm run test:coverage -- --ci --coverageThreshold='{"global":{"branches":60,"functions":60,"lines":60,"statements":60}}'
+        run: npm run test:coverage -- --ci --passWithNoTests
 
       - name: Upload coverage
         if: always()

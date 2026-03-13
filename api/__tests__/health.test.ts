@@ -2,14 +2,8 @@
  * Tests for health check endpoints.
  */
 
-import {
-  jest,
-  describe,
-  it,
-  expect,
-  beforeEach,
-  afterEach,
-} from "@jest/globals";
+import { describe, it, expect } from "@jest/globals";
+import request from "supertest";
 import express from "express";
 
 // Build a minimal app with just the health endpoints for testing
@@ -29,44 +23,14 @@ function createTestApp() {
 }
 
 describe("Health Check Route", () => {
-  let app: express.Application;
-
-  beforeEach(() => {
-    app = createTestApp();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  const app = createTestApp();
 
   describe("GET /health", () => {
     it("should return health status", async () => {
-      // Use a simple approach without supertest to avoid sandbox issues
-      const result = await new Promise<any>((resolve) => {
-        const req = {
-          method: "GET",
-          url: "/health",
-          headers: {},
-        } as any;
+      const response = await request(app).get("/health");
 
-        const res = {
-          statusCode: 200,
-          body: null as any,
-          status(code: number) {
-            this.statusCode = code;
-            return this;
-          },
-          json(data: any) {
-            this.body = data;
-            resolve(this);
-            return this;
-          },
-        } as any;
-
-        app.handle(req, res, () => {});
-      });
-
-      expect(result.body).toEqual(
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(
         expect.objectContaining({
           status: "ok",
           timestamp: expect.any(String),
@@ -76,60 +40,16 @@ describe("Health Check Route", () => {
     });
 
     it("should include timestamp in ISO format", async () => {
-      const result = await new Promise<any>((resolve) => {
-        const req = {
-          method: "GET",
-          url: "/health",
-          headers: {},
-        } as any;
+      const response = await request(app).get("/health");
 
-        const res = {
-          statusCode: 200,
-          body: null as any,
-          status(code: number) {
-            this.statusCode = code;
-            return this;
-          },
-          json(data: any) {
-            this.body = data;
-            resolve(this);
-            return this;
-          },
-        } as any;
-
-        app.handle(req, res, () => {});
-      });
-
-      const timestamp = new Date(result.body.timestamp);
-      expect(timestamp.toISOString()).toBe(result.body.timestamp);
+      const timestamp = new Date(response.body.timestamp);
+      expect(timestamp.toISOString()).toBe(response.body.timestamp);
     });
 
     it("should include positive uptime", async () => {
-      const result = await new Promise<any>((resolve) => {
-        const req = {
-          method: "GET",
-          url: "/health",
-          headers: {},
-        } as any;
+      const response = await request(app).get("/health");
 
-        const res = {
-          statusCode: 200,
-          body: null as any,
-          status(code: number) {
-            this.statusCode = code;
-            return this;
-          },
-          json(data: any) {
-            this.body = data;
-            resolve(this);
-            return this;
-          },
-        } as any;
-
-        app.handle(req, res, () => {});
-      });
-
-      expect(result.body.uptime).toBeGreaterThan(0);
+      expect(response.body.uptime).toBeGreaterThan(0);
     });
   });
 });
