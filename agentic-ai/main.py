@@ -12,6 +12,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.routes.agents import router as agents_router
 from api.routes.health import router as health_router
 from config import config
 
@@ -67,6 +68,7 @@ def create_app() -> FastAPI:
 
     # Routes
     app.include_router(health_router)
+    app.include_router(agents_router)
 
     return app
 
