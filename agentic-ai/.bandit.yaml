@@ -1,0 +1,16 @@
+# Bandit security scanner configuration
+# Run: bandit -r . -c .bandit.yaml
+
+skips:
+  # B101: assert used — acceptable in tests
+  - B101
+
+exclude_dirs:
+  - tests
+  - venv
+  - .venv
+  - __pycache__
+  - node_modules
+
+targets:
+  - .

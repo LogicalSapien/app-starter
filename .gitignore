@@ -1,0 +1,114 @@
+# ──────────────────────────────────────────────
+# Node.js
+# ──────────────────────────────────────────────
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn/cache
+.pnp.*
+
+# ──────────────────────────────────────────────
+# Python
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+*.egg
+
+# ──────────────────────────────────────────────
+# Environment & Secrets
+# ──────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!env.example
+*.pem
+*.key
+*.crt
+credentials.json
+service-account*.json
+secrets/
+
+# ──────────────────────────────────────────────
+# macOS
+# ──────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ──────────────────────────────────────────────
+# IDEs & Editors
+# ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ──────────────────────────────────────────────
+# Expo / React Native (generated)
+# ──────────────────────────────────────────────
+mobile/ios/
+mobile/android/
+mobile/.expo/
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+
+# ──────────────────────────────────────────────
+# Docker
+# ──────────────────────────────────────────────
+docker-compose.override.yml
+.docker/
+
+# ──────────────────────────────────────────────
+# Terraform
+# ──────────────────────────────────────────────
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# ──────────────────────────────────────────────
+# Claude Code
+# ──────────────────────────────────────────────
+.claude/
+
+# ──────────────────────────────────────────────
+# Logs
+# ──────────────────────────────────────────────
+logs/
+*.log
+
+# ──────────────────────────────────────────────
+# Misc
+# ──────────────────────────────────────────────
+*.tmp
+*.bak
+*.orig
+.cache/
