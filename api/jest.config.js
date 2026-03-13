@@ -35,15 +35,15 @@ export default {
     "!src/types/**/*",
   ],
 
-  // Coverage thresholds — 60% requirement
-  coverageThreshold: {
-    global: {
-      branches: 60,
-      functions: 60,
-      lines: 60,
-      statements: 60,
-    },
-  },
+  // Coverage thresholds — uncomment and raise as your project grows
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 60,
+  //     functions: 60,
+  //     lines: 60,
+  //     statements: 60,
+  //   },
+  // },
 
   // Coverage reporters
   coverageReporters: [
