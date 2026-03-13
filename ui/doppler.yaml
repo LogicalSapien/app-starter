@@ -1,0 +1,3 @@
+setup:
+  project: app-starter-ui
+  config: dev

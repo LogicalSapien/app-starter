@@ -8,6 +8,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
+import rolesRoutes from "./routes/roles.js";
+import auditLogsRoutes from "./routes/audit-logs.js";
 import { requestLogger, errorLogger } from "./middleware/logging.js";
 import { csrfProtection } from "./middleware/csrf.js";
 import logger from "./utils/logger.js";
@@ -92,6 +94,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // ---------------------------------------------------------------------------
 // Health check endpoints (before CSRF so they remain publicly accessible)
+// Health checks are version-independent.
 // ---------------------------------------------------------------------------
 
 app.get("/health", (_req, res) => {
@@ -117,10 +120,12 @@ app.get("/api/health/database", async (_req, res) => {
 app.use("/api", csrfProtection);
 
 // ---------------------------------------------------------------------------
-// API routes
+// API v1 routes
 // ---------------------------------------------------------------------------
-app.use("/api/auth", authRoutes);
-app.use("/api/users", usersRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/roles", rolesRoutes);
+app.use("/api/v1/audit-logs", auditLogsRoutes);
 
 // ---------------------------------------------------------------------------
 // Error handling

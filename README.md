@@ -69,9 +69,11 @@ Get up and running in under 5 minutes.
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) 20+
-- [Python](https://python.org) 3.13+
+- [Node.js](https://nodejs.org) 20+ (recommend [nvm](https://github.com/nvm-sh/nvm))
+- [Python](https://python.org) 3.13+ (recommend [pyenv](https://github.com/pyenv/pyenv))
+- [Supabase](https://supabase.com) account (free tier works)
 - [Docker](https://docker.com) (optional, for containerised development)
+- [Doppler CLI](https://docs.doppler.com/docs/install-cli) (optional, for secrets management)
 
 ### 1. Clone and install
 
@@ -88,12 +90,22 @@ docker compose up postgres -d
 
 ### 3. Configure the API
 
+**With Doppler (recommended):**
+
+```bash
+doppler login
+doppler setup                 # Select your project and dev config
+cd api && doppler run -- npx prisma generate && doppler run -- npx prisma migrate dev
+```
+
+**Without Doppler:**
+
 ```bash
 cd api
 cp env.example .env          # Edit with your Supabase credentials
 npm install
 npx prisma generate
-npx prisma migrate deploy
+npx prisma migrate dev
 ```
 
 ### 4. Start all services
@@ -104,7 +116,7 @@ chmod +x scripts/start-local-dev.sh
 ./scripts/start-local-dev.sh
 ```
 
-Or start services individually:
+The script auto-detects Doppler and uses it when available. Or start services individually:
 
 ```bash
 cd api && npm run dev          # API        -> http://localhost:3001
@@ -112,7 +124,15 @@ cd ui && npm run dev           # Web UI     -> http://localhost:5173
 cd mobile && npx expo start   # Mobile     -> Expo dev tools
 ```
 
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide.
+### 5. Verify
+
+```bash
+curl http://localhost:3001/api/health    # Should return {"status":"ok", ...}
+```
+
+Open http://localhost:5173 to see the UI.
+
+See [docs/SETUP.md](docs/SETUP.md) for the full setup guide (Supabase account creation, Doppler configuration, database seeding, troubleshooting).
 
 ---
 
@@ -165,6 +185,26 @@ app-starter/
 
 ---
 
+## What's Included
+
+Everything you need for a production application, pre-wired and ready to extend:
+
+| Category             | Features                                                                 |
+|----------------------|--------------------------------------------------------------------------|
+| **Authentication**   | Supabase Auth (email/password, OAuth, magic links), JWT verification     |
+| **Authorization**    | RBAC with roles, permissions, user assignment, in-memory caching         |
+| **Audit Logging**    | AuditLog table for tracking user actions, IP, user agent, details        |
+| **Security**         | Helmet headers, CORS, CSRF protection, rate limiting                     |
+| **Database**         | Prisma ORM, PostgreSQL, migrations, seeding, connection retry            |
+| **Health Checks**    | `/health`, `/api/health`, `/api/health/database` endpoints               |
+| **Structured Logging** | Leveled logger (ERROR/WARN/INFO/DEBUG) with coloured console output   |
+| **Docker**           | Production Dockerfiles, docker-compose.yml, PostgreSQL with health checks |
+| **CI/CD**            | GitHub Actions with per-service change detection, coverage thresholds    |
+| **Pre-commit Hooks** | Trailing whitespace, JSON/YAML check, Black, isort, flake8, Prettier    |
+| **Secrets Management** | Doppler integration (optional, fallback to .env files)                 |
+
+---
+
 ## Features
 
 ### Authentication
@@ -172,14 +212,26 @@ app-starter/
 - Supabase Auth integration with JWT verification
 - Supports email/password, OAuth providers, and magic links
 - Middleware for protected routes with user context extraction
+- See [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md) for the complete auth lifecycle
 
-### API Middleware Stack
+### RBAC (Role-Based Access Control)
 
-- **Helmet** -- Security headers (XSS, HSTS, content sniffing)
-- **CORS** -- Configurable allowed origins
+- **Roles and Permissions** -- Assign roles to users, grant permissions to roles
+- **Permission format** -- `resource:action` (e.g., `user:read`, `role:manage`)
+- **Default roles** -- Automatically assigned to new users on signup
+- **In-memory caching** -- 5-minute TTL to reduce database queries
+- **Full CRUD** -- Create, update, delete roles and permissions via service layer
+- See [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md#rbac-system) for details
+
+### API Security Stack
+
+- **Helmet** -- Security headers (XSS, HSTS, CSP, content sniffing)
+- **CORS** -- Configurable allowed origins via `FRONTEND_URLS`
+- **CSRF Protection** -- `X-Requested-With` header required for mutations
 - **Rate Limiting** -- Per-IP request throttling via express-rate-limit
-- **Morgan** -- Structured HTTP request logging
+- **Structured Logging** -- Custom logger with levels and response timing
 - **Zod Validation** -- Type-safe request body validation
+- See [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md#security-layers) for the full middleware pipeline
 
 ### Database
 
@@ -245,6 +297,18 @@ app-starter/
 
 ---
 
+## Documentation
+
+| Document                                              | Description                                                     |
+|-------------------------------------------------------|-----------------------------------------------------------------|
+| [docs/SETUP.md](docs/SETUP.md)                       | Full setup guide: Supabase, Doppler, database, all services     |
+| [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md)                | Authentication lifecycle, JWT structure, RBAC system             |
+| [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md)         | How services connect, security layers, adding new features       |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)          | System diagram, service responsibilities, deployment options     |
+| [docs/NAMING_CONVENTIONS.md](docs/NAMING_CONVENTIONS.md) | Naming and code style rules for all languages                 |
+
+---
+
 ## Customization
 
 This template is designed to be forked and adapted for your specific project.
@@ -264,6 +328,15 @@ api/src/routes/my-feature.ts
 api/src/services/my-feature-service.ts
 api/tests/my-feature.test.ts
 ```
+
+Then mount it in `api/src/index.ts`:
+
+```typescript
+import myFeatureRoutes from "./routes/my-feature.js";
+app.use("/api/my-feature", myFeatureRoutes);
+```
+
+Add RBAC permissions in `api/prisma/seed.ts` and protect routes with `authenticateUser` + `hasPermission()`. See [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md#adding-a-new-feature-end-to-end-example) for a complete walkthrough.
 
 ### Add a new UI page
 

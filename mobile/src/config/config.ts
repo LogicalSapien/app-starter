@@ -16,7 +16,7 @@ function getConfig(): AppConfig {
   }
 
   return {
-    apiBaseUrl: extra.apiBaseUrl ?? "http://localhost:3000",
+    apiBaseUrl: extra.apiBaseUrl ?? "http://localhost:3001/api/v1",
     supabaseUrl: extra.supabaseUrl ?? "",
     supabaseAnonKey: extra.supabaseAnonKey ?? "",
   };
