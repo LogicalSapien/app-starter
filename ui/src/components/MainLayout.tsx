@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   Bars3Icon,
   XMarkIcon,
   HomeIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
-} from '@heroicons/react/24/outline';
-import { useAuth } from '@/contexts/AuthContext';
+} from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  { name: 'Profile', href: '/profile', icon: UserCircleIcon },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  { name: "Profile", href: "/profile", icon: UserCircleIcon },
 ];
 
 export default function MainLayout() {
@@ -21,7 +21,7 @@ export default function MainLayout() {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -37,7 +37,7 @@ export default function MainLayout() {
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white shadow-lg transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-secondary-200 px-6">
@@ -67,8 +67,8 @@ export default function MainLayout() {
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-primary-50 text-primary-700'
-                        : 'text-secondary-600 hover:bg-secondary-50 hover:text-secondary-900'
+                        ? "bg-primary-50 text-primary-700"
+                        : "text-secondary-600 hover:bg-secondary-50 hover:text-secondary-900"
                     }`
                   }
                 >
@@ -107,10 +107,10 @@ export default function MainLayout() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-sm font-medium text-primary-700">
                 {user?.name?.charAt(0)?.toUpperCase() ??
                   user?.email?.charAt(0)?.toUpperCase() ??
-                  'U'}
+                  "U"}
               </div>
               <span className="hidden text-sm font-medium text-secondary-700 sm:block">
-                {user?.name ?? user?.email ?? 'User'}
+                {user?.name ?? user?.email ?? "User"}
               </span>
             </div>
           </div>

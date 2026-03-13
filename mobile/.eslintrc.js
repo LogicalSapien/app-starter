@@ -8,12 +8,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "react-native",
-  ],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "react-native"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",

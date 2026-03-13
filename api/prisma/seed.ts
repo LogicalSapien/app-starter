@@ -85,20 +85,13 @@ const DEFAULT_ROLES: {
     name: "moderator",
     description: "Read access plus some write operations",
     isDefault: false,
-    permissions: [
-      "user:read",
-      "user:update",
-      "role:read",
-      "audit:read",
-    ],
+    permissions: ["user:read", "user:update", "role:read", "audit:read"],
   },
   {
     name: "user",
     description: "Basic read-only access",
     isDefault: true,
-    permissions: [
-      "user:read",
-    ],
+    permissions: ["user:read"],
   },
 ];
 

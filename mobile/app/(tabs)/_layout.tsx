@@ -33,27 +33,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="H" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon label="H" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="P" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon label="P" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "Settings",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon label="S" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon label="S" focused={focused} />,
         }}
       />
     </Tabs>

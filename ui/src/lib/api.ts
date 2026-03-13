@@ -1,6 +1,6 @@
-import { config } from '@/config/config';
-import { supabase } from '@/lib/supabase';
-import type { ApiResponse } from '@/types';
+import { config } from "@/config/config";
+import { supabase } from "@/lib/supabase";
+import type { ApiResponse } from "@/types";
 
 class ApiClient {
   private baseUrl: string;
@@ -11,7 +11,7 @@ class ApiClient {
 
   private async getAuthHeaders(): Promise<Record<string, string>> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
     const {
@@ -19,7 +19,7 @@ class ApiClient {
     } = await supabase.auth.getSession();
 
     if (session?.access_token) {
-      headers['Authorization'] = `Bearer ${session.access_token}`;
+      headers["Authorization"] = `Bearer ${session.access_token}`;
     }
 
     return headers;
@@ -38,7 +38,7 @@ class ApiClient {
       headers,
     };
 
-    if (body && method !== 'GET') {
+    if (body && method !== "GET") {
       init.body = JSON.stringify(body);
     }
 
@@ -58,23 +58,23 @@ class ApiClient {
   }
 
   async get<T>(path: string): Promise<ApiResponse<T>> {
-    return this.request<T>('GET', path);
+    return this.request<T>("GET", path);
   }
 
   async post<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>('POST', path, body);
+    return this.request<T>("POST", path, body);
   }
 
   async put<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>('PUT', path, body);
+    return this.request<T>("PUT", path, body);
   }
 
   async patch<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>('PATCH', path, body);
+    return this.request<T>("PATCH", path, body);
   }
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
-    return this.request<T>('DELETE', path);
+    return this.request<T>("DELETE", path);
   }
 }
 
@@ -84,7 +84,7 @@ export class ApiError extends Error {
 
   constructor(message: string, status: number, body?: unknown) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.status = status;
     this.body = body;
   }

@@ -69,7 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
       return { error };
     },
-    []
+    [],
   );
 
   const signUp = useCallback(
@@ -80,7 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
       return { error };
     },
-    []
+    [],
   );
 
   const signOut = useCallback(async () => {

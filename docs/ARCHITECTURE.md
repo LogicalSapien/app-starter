@@ -45,19 +45,20 @@ High-level overview of the system architecture, service responsibilities, and co
 
 The central backend service. All client applications communicate through this API.
 
-| Aspect         | Detail                                          |
-|----------------|------------------------------------------------|
-| Runtime        | Node.js 20+                                    |
-| Framework      | Express 4                                      |
-| Language       | TypeScript                                     |
-| ORM            | Prisma                                         |
-| Auth           | Supabase JWT verification                      |
-| Authorization  | RBAC (Role-Based Access Control)               |
-| Validation     | Zod                                            |
-| Audit          | AuditLog table for tracking user actions        |
-| Testing        | Jest + Supertest                                |
+| Aspect        | Detail                                   |
+| ------------- | ---------------------------------------- |
+| Runtime       | Node.js 20+                              |
+| Framework     | Express 4                                |
+| Language      | TypeScript                               |
+| ORM           | Prisma                                   |
+| Auth          | Supabase JWT verification                |
+| Authorization | RBAC (Role-Based Access Control)         |
+| Validation    | Zod                                      |
+| Audit         | AuditLog table for tracking user actions |
+| Testing       | Jest + Supertest                         |
 
 **Key middleware stack:**
+
 - Helmet (security headers)
 - CORS (configurable origins via `FRONTEND_URLS`)
 - Rate limiting (express-rate-limit, per-IP throttling)
@@ -87,16 +88,16 @@ api/
 
 The web frontend, a single-page application.
 
-| Aspect         | Detail                                          |
-|----------------|------------------------------------------------|
-| Framework      | React 18                                       |
-| Build tool     | Vite 6                                         |
-| Styling        | Tailwind CSS 3                                 |
-| Routing        | React Router 6                                 |
-| State          | TanStack Query (server), React state (local)   |
-| Components     | Headless UI + Heroicons                        |
-| Testing        | Jest + React Testing Library                   |
-| E2E            | Playwright                                     |
+| Aspect     | Detail                                       |
+| ---------- | -------------------------------------------- |
+| Framework  | React 18                                     |
+| Build tool | Vite 6                                       |
+| Styling    | Tailwind CSS 3                               |
+| Routing    | React Router 6                               |
+| State      | TanStack Query (server), React state (local) |
+| Components | Headless UI + Heroicons                      |
+| Testing    | Jest + React Testing Library                 |
+| E2E        | Playwright                                   |
 
 **Project structure:**
 
@@ -115,14 +116,14 @@ ui/
 
 The mobile application, sharing patterns with the web UI.
 
-| Aspect         | Detail                                          |
-|----------------|------------------------------------------------|
-| Framework      | React Native 0.76                              |
-| Platform       | Expo SDK 54                                    |
-| Navigation     | Expo Router 5                                  |
-| State          | TanStack Query + Zustand                       |
-| Storage        | AsyncStorage                                   |
-| Testing        | Jest + React Native Testing Library            |
+| Aspect     | Detail                              |
+| ---------- | ----------------------------------- |
+| Framework  | React Native 0.76                   |
+| Platform   | Expo SDK 54                         |
+| Navigation | Expo Router 5                       |
+| State      | TanStack Query + Zustand            |
+| Storage    | AsyncStorage                        |
+| Testing    | Jest + React Native Testing Library |
 
 **Project structure:**
 
@@ -139,14 +140,14 @@ mobile/
 
 An AI/ML microservice for intelligent features.
 
-| Aspect         | Detail                                          |
-|----------------|------------------------------------------------|
-| Runtime        | Python 3.13+                                   |
-| Framework      | FastAPI                                        |
-| AI Framework   | Pydantic AI                                    |
-| LLM providers  | OpenAI, Anthropic                              |
-| Validation     | Pydantic v2                                    |
-| Testing        | pytest + pytest-asyncio                        |
+| Aspect        | Detail                  |
+| ------------- | ----------------------- |
+| Runtime       | Python 3.13+            |
+| Framework     | FastAPI                 |
+| AI Framework  | Pydantic AI             |
+| LLM providers | OpenAI, Anthropic       |
+| Validation    | Pydantic v2             |
+| Testing       | pytest + pytest-asyncio |
 
 **Project structure:**
 
@@ -235,6 +236,7 @@ Request arrives
 ```
 
 Implementation files:
+
 - Layers 1-6: `api/src/index.ts`
 - Layer 6 logic: `api/src/middleware/csrf.ts`
 - Layer 7: `api/src/middleware/auth.ts`
@@ -283,11 +285,11 @@ users ──< user_roles >── roles ──< role_permissions >── permissi
 
 ### Key files
 
-| File                                  | Purpose                               |
-|---------------------------------------|---------------------------------------|
-| `api/prisma/schema.prisma`            | Role, Permission, UserRole, RolePermission models |
-| `api/src/services/rbac-service.ts`    | Permission queries, role management, caching |
-| `api/prisma/seed.ts`                  | Default roles and permissions          |
+| File                               | Purpose                                           |
+| ---------------------------------- | ------------------------------------------------- |
+| `api/prisma/schema.prisma`         | Role, Permission, UserRole, RolePermission models |
+| `api/src/services/rbac-service.ts` | Permission queries, role management, caching      |
+| `api/prisma/seed.ts`               | Default roles and permissions                     |
 
 ---
 
@@ -297,17 +299,17 @@ The `AuditLog` model records who performed what action, on which resource, and w
 
 ### Fields
 
-| Field        | Type         | Description                                |
-|--------------|--------------|--------------------------------------------|
-| `id`         | UUID         | Primary key                                |
-| `userId`     | UUID (null)  | Who did it (null for system actions)       |
+| Field        | Type         | Description                                     |
+| ------------ | ------------ | ----------------------------------------------- |
+| `id`         | UUID         | Primary key                                     |
+| `userId`     | UUID (null)  | Who did it (null for system actions)            |
 | `action`     | VARCHAR(100) | What happened (`user.created`, `role.assigned`) |
-| `resource`   | VARCHAR(100) | Entity type (`user`, `role`, `post`)       |
-| `resourceId` | VARCHAR(255) | ID of the affected entity                  |
-| `details`    | JSON         | Additional context (old/new values, etc.)  |
-| `ipAddress`  | VARCHAR(45)  | Client IP                                  |
-| `userAgent`  | VARCHAR(512) | Client user agent                          |
-| `createdAt`  | TIMESTAMP    | When the action occurred                   |
+| `resource`   | VARCHAR(100) | Entity type (`user`, `role`, `post`)            |
+| `resourceId` | VARCHAR(255) | ID of the affected entity                       |
+| `details`    | JSON         | Additional context (old/new values, etc.)       |
+| `ipAddress`  | VARCHAR(45)  | Client IP                                       |
+| `userAgent`  | VARCHAR(512) | Client user agent                               |
+| `createdAt`  | TIMESTAMP    | When the action occurred                        |
 
 The table is indexed on `userId`, `action`, `resource`, and `createdAt` for efficient querying. See `api/prisma/schema.prisma` for the full definition.
 
@@ -323,17 +325,18 @@ The table is indexed on `userId`, `action`, `resource`, and `createdAt` for effi
 
 ### Platform-as-a-Service
 
-| Service     | Recommended Platform                    |
-|-------------|----------------------------------------|
-| API         | Railway, Render, Fly.io                |
-| UI          | Vercel, Netlify, Cloudflare Pages      |
-| Agentic AI  | Railway, Render, Cloud Run             |
-| Database    | Supabase, Neon, Railway Postgres       |
-| Mobile      | EAS Build (Expo Application Services)  |
+| Service    | Recommended Platform                  |
+| ---------- | ------------------------------------- |
+| API        | Railway, Render, Fly.io               |
+| UI         | Vercel, Netlify, Cloudflare Pages     |
+| Agentic AI | Railway, Render, Cloud Run            |
+| Database   | Supabase, Neon, Railway Postgres      |
+| Mobile     | EAS Build (Expo Application Services) |
 
 ### Infrastructure-as-Code
 
 For production environments, consider:
+
 - Terraform for cloud infrastructure
 - GitHub Actions for CI/CD (workflow included)
 - Doppler for secrets management

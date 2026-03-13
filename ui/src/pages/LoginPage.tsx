@@ -1,12 +1,12 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAlert } from '@/contexts/AlertContext';
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAlert } from "@/contexts/AlertContext";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signIn } = useAuth();
   const { showAlert } = useAlert();
@@ -16,18 +16,20 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email || !password) {
-      showAlert('Please fill in all fields.', 'warning');
+      showAlert("Please fill in all fields.", "warning");
       return;
     }
 
     setIsSubmitting(true);
     try {
       await signIn(email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'Sign in failed. Please try again.';
-      showAlert(message, 'error');
+        err instanceof Error
+          ? err.message
+          : "Sign in failed. Please try again.";
+      showAlert(message, "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -116,13 +118,13 @@ export default function LoginPage() {
               />
             </svg>
           ) : (
-            'Sign In'
+            "Sign In"
           )}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-secondary-500">
-        Don&apos;t have an account?{' '}
+        Don&apos;t have an account?{" "}
         <Link
           to="/signup"
           className="font-medium text-primary-600 transition-colors hover:text-primary-700"

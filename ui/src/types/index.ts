@@ -30,5 +30,5 @@ export interface AuthState {
 export interface AlertMessage {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
 }

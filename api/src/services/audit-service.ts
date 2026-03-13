@@ -30,14 +30,12 @@ export async function log(
 ): Promise<void> {
   try {
     const ipAddress = req
-      ? (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ??
+      ? ((req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ??
         req.ip ??
-        null
+        null)
       : null;
 
-    const userAgent = req
-      ? (req.headers["user-agent"] ?? null)
-      : null;
+    const userAgent = req ? (req.headers["user-agent"] ?? null) : null;
 
     await prisma.auditLog.create({
       data: {
@@ -51,7 +49,12 @@ export async function log(
       },
     });
 
-    auditLogger.debug("Audit entry created", { userId, action, resource, resourceId });
+    auditLogger.debug("Audit entry created", {
+      userId,
+      action,
+      resource,
+      resourceId,
+    });
   } catch (error: any) {
     auditLogger.error("Failed to write audit log", {
       error: error.message,

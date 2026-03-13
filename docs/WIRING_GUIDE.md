@@ -36,16 +36,16 @@ How the services fit together -- communication patterns, security layers, enviro
 
 ### Communication summary
 
-| From       | To          | Protocol | Auth mechanism                    |
-|------------|-------------|----------|-----------------------------------|
-| UI         | Supabase    | HTTPS    | Supabase anon key                 |
-| Mobile     | Supabase    | HTTPS    | Supabase anon key                 |
-| UI         | API         | HTTP(S)  | `Authorization: Bearer <jwt>`     |
-| Mobile     | API         | HTTP(S)  | `Authorization: Bearer <jwt>`     |
-| API        | Supabase    | HTTPS    | Service role key (token validation) |
-| API        | PostgreSQL  | TCP      | Connection string (Prisma)        |
-| API        | AI Service  | HTTP     | Internal network / shared secret  |
-| AI Service | PostgreSQL  | TCP      | Connection string                 |
+| From       | To         | Protocol | Auth mechanism                      |
+| ---------- | ---------- | -------- | ----------------------------------- |
+| UI         | Supabase   | HTTPS    | Supabase anon key                   |
+| Mobile     | Supabase   | HTTPS    | Supabase anon key                   |
+| UI         | API        | HTTP(S)  | `Authorization: Bearer <jwt>`       |
+| Mobile     | API        | HTTP(S)  | `Authorization: Bearer <jwt>`       |
+| API        | Supabase   | HTTPS    | Service role key (token validation) |
+| API        | PostgreSQL | TCP      | Connection string (Prisma)          |
+| API        | AI Service | HTTP     | Internal network / shared secret    |
+| AI Service | PostgreSQL | TCP      | Connection string                   |
 
 ---
 
@@ -133,15 +133,15 @@ Request
 ### File locations
 
 | Layer           | File                               |
-|-----------------|-------------------------------------|
+| --------------- | ---------------------------------- |
 | Helmet          | `api/src/index.ts` (lines 32-44)   |
 | CORS            | `api/src/index.ts` (lines 47-64)   |
 | Rate limiter    | `api/src/index.ts` (lines 70-84)   |
-| Request logger  | `api/src/middleware/logging.ts`     |
+| Request logger  | `api/src/middleware/logging.ts`    |
 | Body parser     | `api/src/index.ts` (lines 90-91)   |
-| CSRF protection | `api/src/middleware/csrf.ts`        |
-| JWT auth        | `api/src/middleware/auth.ts`        |
-| RBAC            | `api/src/services/rbac-service.ts`  |
+| CSRF protection | `api/src/middleware/csrf.ts`       |
+| JWT auth        | `api/src/middleware/auth.ts`       |
+| RBAC            | `api/src/services/rbac-service.ts` |
 
 ---
 
@@ -162,6 +162,7 @@ Doppler Cloud
 ```
 
 When you run `doppler run -- npm run dev`, Doppler:
+
 1. Fetches all secrets for the current project/config.
 2. Injects them as `process.env.*` variables.
 3. Launches your command.
@@ -170,31 +171,31 @@ The API detects Doppler via the `DOPPLER_ENVIRONMENT` env var and logs which env
 
 ### Environment hierarchy
 
-| Environment | Purpose                  | Doppler config | NODE_ENV      |
-|-------------|--------------------------|----------------|---------------|
-| dev         | Local development        | `dev`          | `development` |
-| tst / stg   | Testing / staging        | `stg`          | `testing`     |
-| prd         | Production               | `prd`          | `production`  |
+| Environment | Purpose           | Doppler config | NODE_ENV      |
+| ----------- | ----------------- | -------------- | ------------- |
+| dev         | Local development | `dev`          | `development` |
+| tst / stg   | Testing / staging | `stg`          | `testing`     |
+| prd         | Production        | `prd`          | `production`  |
 
 ### Which variables are shared vs service-specific
 
-| Variable                     | API | UI | Mobile | AI | Notes                        |
-|------------------------------|-----|-----|--------|-----|------------------------------|
-| `DATABASE_URL`               | X   |     |        | X   | Same DB, different services  |
-| `SUPABASE_URL`               | X   | X   | X      |     | Same project URL everywhere  |
-| `SUPABASE_ANON_KEY`          | X   | X   | X      |     | Public key, same everywhere  |
-| `SUPABASE_SERVICE_ROLE_KEY`  | X   |     |        |     | Server-only secret           |
-| `FRONTEND_URLS`              | X   |     |        |     | API-only CORS config         |
-| `OPENAI_API_KEY`             |     |     |        | X   | AI service only              |
-| `ANTHROPIC_API_KEY`          |     |     |        | X   | AI service only              |
+| Variable                    | API | UI  | Mobile | AI  | Notes                       |
+| --------------------------- | --- | --- | ------ | --- | --------------------------- |
+| `DATABASE_URL`              | X   |     |        | X   | Same DB, different services |
+| `SUPABASE_URL`              | X   | X   | X      |     | Same project URL everywhere |
+| `SUPABASE_ANON_KEY`         | X   | X   | X      |     | Public key, same everywhere |
+| `SUPABASE_SERVICE_ROLE_KEY` | X   |     |        |     | Server-only secret          |
+| `FRONTEND_URLS`             | X   |     |        |     | API-only CORS config        |
+| `OPENAI_API_KEY`            |     |     |        | X   | AI service only             |
+| `ANTHROPIC_API_KEY`         |     |     |        | X   | AI service only             |
 
 ### Public vs secret variables
 
-| Prefix               | Visibility     | Example                          |
-|----------------------|----------------|----------------------------------|
-| `VITE_*`             | Embedded in UI bundle, publicly visible  | `VITE_SUPABASE_URL`     |
-| `EXPO_PUBLIC_*`      | Embedded in mobile bundle, publicly visible | `EXPO_PUBLIC_SUPABASE_URL` |
-| No prefix            | Server-only, never sent to clients | `SUPABASE_SERVICE_ROLE_KEY` |
+| Prefix          | Visibility                                  | Example                     |
+| --------------- | ------------------------------------------- | --------------------------- |
+| `VITE_*`        | Embedded in UI bundle, publicly visible     | `VITE_SUPABASE_URL`         |
+| `EXPO_PUBLIC_*` | Embedded in mobile bundle, publicly visible | `EXPO_PUBLIC_SUPABASE_URL`  |
+| No prefix       | Server-only, never sent to clients          | `SUPABASE_SERVICE_ROLE_KEY` |
 
 **Rule:** Never put secrets (API keys, service role keys, database passwords) in `VITE_*` or `EXPO_PUBLIC_*` variables. They are compiled into the client bundle and visible to anyone.
 
@@ -375,7 +376,11 @@ export async function findAll(page = 1, limit = 20) {
   return { posts, total };
 }
 
-export async function create(authorId: string, title: string, content?: string) {
+export async function create(
+  authorId: string,
+  title: string,
+  content?: string,
+) {
   return prisma.post.create({
     data: { title, content, authorId },
   });
@@ -444,13 +449,23 @@ Update `api/prisma/seed.ts` to create the new permissions:
 await prisma.permission.upsert({
   where: { name: "post:read" },
   update: {},
-  create: { name: "post:read", description: "Read posts", resource: "post", action: "READ" },
+  create: {
+    name: "post:read",
+    description: "Read posts",
+    resource: "post",
+    action: "READ",
+  },
 });
 
 await prisma.permission.upsert({
   where: { name: "post:create" },
   update: {},
-  create: { name: "post:create", description: "Create posts", resource: "post", action: "CREATE" },
+  create: {
+    name: "post:create",
+    description: "Create posts",
+    resource: "post",
+    action: "CREATE",
+  },
 });
 ```
 
@@ -461,13 +476,13 @@ Run the seed: `cd api && npx prisma db seed`
 Create `ui/src/pages/PostsPage.tsx`:
 
 ```tsx
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 export default function PostsPage() {
   const { data, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: () => api.get('/posts'),
+    queryKey: ["posts"],
+    queryFn: () => api.get("/posts"),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -491,10 +506,10 @@ export default function PostsPage() {
 Update `ui/src/App.tsx`:
 
 ```tsx
-const PostsPage = lazy(() => import('@/pages/PostsPage'));
+const PostsPage = lazy(() => import("@/pages/PostsPage"));
 
 // Inside the protected routes:
-<Route path="/posts" element={<PostsPage />} />
+<Route path="/posts" element={<PostsPage />} />;
 ```
 
 ### 8. Mobile: Create the screen
@@ -502,14 +517,14 @@ const PostsPage = lazy(() => import('@/pages/PostsPage'));
 Create `mobile/app/posts.tsx`:
 
 ```tsx
-import { View, Text, FlatList } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../services/api';
+import { View, Text, FlatList } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../services/api";
 
 export default function PostsScreen() {
   const { data, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: () => api.get('/posts'),
+    queryKey: ["posts"],
+    queryFn: () => api.get("/posts"),
   });
 
   if (isLoading) return <Text>Loading...</Text>;
@@ -519,8 +534,10 @@ export default function PostsScreen() {
       data={data?.posts}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <View style={{ padding: 16, borderBottomWidth: 1, borderColor: '#eee' }}>
-          <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
+        <View
+          style={{ padding: 16, borderBottomWidth: 1, borderColor: "#eee" }}
+        >
+          <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
           <Text>{item.content}</Text>
         </View>
       )}

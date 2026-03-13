@@ -9,10 +9,11 @@ Complete guide to get the full stack running locally from scratch. Follow each s
 Install these tools before continuing. The table lists minimum versions that are tested and supported.
 
 | Tool           | Version | Required | Install                                                        |
-|----------------|---------|----------|----------------------------------------------------------------|
+| -------------- | ------- | -------- | -------------------------------------------------------------- |
 | Node.js        | 20+     | Yes      | `nvm install 20` or [nodejs.org](https://nodejs.org)           |
 | npm            | 10+     | Yes      | Comes with Node.js                                             |
 | Python         | 3.13+   | Yes      | `pyenv install 3.13` or [python.org](https://python.org)       |
+| pre-commit     | 3+      | Yes      | `brew install pre-commit` or `pip install pre-commit`          |
 | Docker Desktop | 24+     | Optional | [docker.com](https://www.docker.com/products/docker-desktop/)  |
 | Doppler CLI    | Latest  | Optional | `brew install dopplerhq/cli/doppler` (recommended for secrets) |
 | Supabase       | --      | Yes      | Free account at [supabase.com](https://supabase.com)           |
@@ -20,6 +21,7 @@ Install these tools before continuing. The table lists minimum versions that are
 **Recommended version managers:**
 
 - **Node.js** -- Use [nvm](https://github.com/nvm-sh/nvm) so you can switch Node versions per project.
+
   ```bash
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
   nvm install 20
@@ -50,12 +52,12 @@ Supabase provides hosted PostgreSQL and authentication. The free tier is suffici
 
 Navigate to **Project Settings** (gear icon in the sidebar). You need four values:
 
-| Credential              | Where to find it                                          | Used by      |
-|-------------------------|-----------------------------------------------------------|--------------|
-| **Project URL**         | Settings > API > Project URL                              | API, UI, Mobile |
-| **Anon (public) key**   | Settings > API > Project API keys > `anon` / `public`     | API, UI, Mobile |
-| **Service role key**    | Settings > API > Project API keys > `service_role`        | API only     |
-| **Database URL**        | Settings > Database > Connection string > URI             | API, AI      |
+| Credential            | Where to find it                                      | Used by         |
+| --------------------- | ----------------------------------------------------- | --------------- |
+| **Project URL**       | Settings > API > Project URL                          | API, UI, Mobile |
+| **Anon (public) key** | Settings > API > Project API keys > `anon` / `public` | API, UI, Mobile |
+| **Service role key**  | Settings > API > Project API keys > `service_role`    | API only        |
+| **Database URL**      | Settings > Database > Connection string > URI         | API, AI         |
 
 **Important security notes:**
 
@@ -67,10 +69,10 @@ Navigate to **Project Settings** (gear icon in the sidebar). You need four value
 
 Supabase offers two connection modes. Choose based on your use case:
 
-| Mode          | Port | When to use                              | Example                                                                          |
-|---------------|------|------------------------------------------|----------------------------------------------------------------------------------|
-| **Pooled**    | 6543 | Most applications, serverless functions  | `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres` |
-| **Direct**    | 5432 | Migrations, Prisma introspect, local dev | `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres` |
+| Mode       | Port | When to use                              | Example                                                                                   |
+| ---------- | ---- | ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Pooled** | 6543 | Most applications, serverless functions  | `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres` |
+| **Direct** | 5432 | Migrations, Prisma introspect, local dev | `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres` |
 
 For local development with Prisma, use the **direct** connection (port 5432). The pooled connection (port 6543) is better for production applications with many concurrent connections.
 
@@ -259,6 +261,7 @@ docker compose up postgres -d
 ```
 
 This starts PostgreSQL on port 5432 with:
+
 - **User:** `postgres`
 - **Password:** `postgres`
 - **Database:** `app_starter`
@@ -381,12 +384,12 @@ This runs everything in containers including the database:
 docker compose up --build
 ```
 
-| Service      | URL / Port                |
-|-------------|---------------------------|
-| API         | http://localhost:3001      |
-| UI          | http://localhost:80        |
-| AI Service  | http://localhost:8000      |
-| PostgreSQL  | localhost:5432             |
+| Service    | URL / Port            |
+| ---------- | --------------------- |
+| API        | http://localhost:3001 |
+| UI         | http://localhost:80   |
+| AI Service | http://localhost:8000 |
+| PostgreSQL | localhost:5432        |
 
 Stop with `docker compose down`. Add `-v` to also remove the database volume.
 
@@ -433,6 +436,58 @@ curl http://localhost:8000/healthz
 
 ---
 
+## Pre-commit Hooks
+
+Pre-commit hooks run automatically on every `git commit` to catch formatting, linting, and security issues before they reach the repo.
+
+### Install pre-commit
+
+```bash
+# macOS
+brew install pre-commit
+
+# pip (any OS)
+pip install pre-commit
+```
+
+### Activate hooks in this repo
+
+```bash
+cd /path/to/app-starter
+pre-commit install
+```
+
+This registers the hooks defined in `.pre-commit-config.yaml`. From now on, every `git commit` will:
+
+1. Fix trailing whitespace and end-of-file newlines
+2. Validate JSON and YAML files
+3. Format Python code with **Black** and sort imports with **isort**
+4. Lint Python with **flake8** and scan for security issues with **bandit**
+5. Format JS/TS/JSON/CSS/MD with **Prettier**
+6. Lint SQL files with **sqlfluff**
+
+### Run manually (recommended before first commit)
+
+```bash
+# Run on all files (first-time setup)
+pre-commit run --all-files
+
+# Run on staged files only (what git commit does)
+pre-commit run
+
+# Run a specific hook
+pre-commit run black --all-files
+pre-commit run prettier --all-files
+```
+
+### Update hook versions
+
+```bash
+pre-commit autoupdate
+```
+
+---
+
 ## Running Tests
 
 ```bash
@@ -447,9 +502,6 @@ cd mobile && npm run test:coverage
 
 # AI tests
 cd agentic-ai && source .venv/bin/activate && pytest tests/ --cov=. -v
-
-# All pre-commit hooks (linting, formatting, security checks)
-pre-commit run --all-files
 ```
 
 ---
@@ -458,52 +510,52 @@ pre-commit run --all-files
 
 ### API (`api/.env`)
 
-| Variable                    | Required | Default           | Description                                       |
-|-----------------------------|----------|-------------------|---------------------------------------------------|
-| `PORT`                      | No       | `3001`            | API server port                                   |
-| `NODE_ENV`                  | No       | `development`     | Environment: development, testing, production     |
-| `DATABASE_URL`              | Yes      | --                | PostgreSQL connection string                      |
-| `SUPABASE_URL`              | Yes      | --                | Supabase project URL                              |
-| `SUPABASE_ANON_KEY`         | Yes      | --                | Supabase public anon key                          |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes      | --                | Supabase service role key (server-only secret)    |
-| `FRONTEND_URLS`             | No       | --                | Allowed CORS origins, comma-separated             |
-| `RATE_LIMIT_ENABLED`        | No       | `true`            | Enable/disable per-IP rate limiting               |
-| `RATE_LIMIT_WINDOW_MS`      | No       | `60000`           | Rate limit window in milliseconds                 |
-| `RATE_LIMIT_MAX`            | No       | `5000` (dev)      | Max requests per window per IP                    |
-| `LOG_LEVEL`                 | No       | `INFO`            | Logging: ERROR, WARN, INFO, DEBUG                 |
-| `SENTRY_DSN`                | No       | --                | Sentry error monitoring DSN                       |
+| Variable                    | Required | Default       | Description                                    |
+| --------------------------- | -------- | ------------- | ---------------------------------------------- |
+| `PORT`                      | No       | `3001`        | API server port                                |
+| `NODE_ENV`                  | No       | `development` | Environment: development, testing, production  |
+| `DATABASE_URL`              | Yes      | --            | PostgreSQL connection string                   |
+| `SUPABASE_URL`              | Yes      | --            | Supabase project URL                           |
+| `SUPABASE_ANON_KEY`         | Yes      | --            | Supabase public anon key                       |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes      | --            | Supabase service role key (server-only secret) |
+| `FRONTEND_URLS`             | No       | --            | Allowed CORS origins, comma-separated          |
+| `RATE_LIMIT_ENABLED`        | No       | `true`        | Enable/disable per-IP rate limiting            |
+| `RATE_LIMIT_WINDOW_MS`      | No       | `60000`       | Rate limit window in milliseconds              |
+| `RATE_LIMIT_MAX`            | No       | `5000` (dev)  | Max requests per window per IP                 |
+| `LOG_LEVEL`                 | No       | `INFO`        | Logging: ERROR, WARN, INFO, DEBUG              |
+| `SENTRY_DSN`                | No       | --            | Sentry error monitoring DSN                    |
 
 ### UI (`ui/.env`)
 
-| Variable                   | Required | Default                           | Description                |
-|----------------------------|----------|-----------------------------------|----------------------------|
-| `VITE_API_URL`             | Yes      | `http://localhost:3001/api/v1`    | API base URL               |
-| `VITE_SUPABASE_URL`        | Yes      | --                                | Supabase project URL       |
-| `VITE_SUPABASE_ANON_KEY`   | Yes      | --                                | Supabase public anon key   |
-| `VITE_ENVIRONMENT`         | No       | `development`                     | Environment identifier     |
+| Variable                 | Required | Default                        | Description              |
+| ------------------------ | -------- | ------------------------------ | ------------------------ |
+| `VITE_API_URL`           | Yes      | `http://localhost:3001/api/v1` | API base URL             |
+| `VITE_SUPABASE_URL`      | Yes      | --                             | Supabase project URL     |
+| `VITE_SUPABASE_ANON_KEY` | Yes      | --                             | Supabase public anon key |
+| `VITE_ENVIRONMENT`       | No       | `development`                  | Environment identifier   |
 
 ### Mobile (`mobile/.env`)
 
-| Variable                         | Required | Default                           | Description                  |
-|----------------------------------|----------|-----------------------------------|------------------------------|
-| `EXPO_PUBLIC_API_BASE_URL`       | Yes      | `http://localhost:3001/api/v1`    | API base URL                 |
-| `EXPO_PUBLIC_SUPABASE_URL`       | Yes      | --                                | Supabase project URL         |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY`  | Yes      | --                                | Supabase public anon key     |
-| `APP_ENV`                        | No       | `dev`                             | Environment: dev, tst, prd   |
+| Variable                        | Required | Default                        | Description                |
+| ------------------------------- | -------- | ------------------------------ | -------------------------- |
+| `EXPO_PUBLIC_API_BASE_URL`      | Yes      | `http://localhost:3001/api/v1` | API base URL               |
+| `EXPO_PUBLIC_SUPABASE_URL`      | Yes      | --                             | Supabase project URL       |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Yes      | --                             | Supabase public anon key   |
+| `APP_ENV`                       | No       | `dev`                          | Environment: dev, tst, prd |
 
 ### Agentic AI (`agentic-ai/.env`)
 
-| Variable            | Required | Default     | Description                     |
-|---------------------|----------|-------------|---------------------------------|
-| `DATABASE_URL`      | Yes      | --          | PostgreSQL connection string    |
-| `OPENAI_API_KEY`    | No*      | --          | OpenAI API key                  |
-| `ANTHROPIC_API_KEY` | No*      | --          | Anthropic API key               |
-| `PORT`              | No       | `8000`      | Server port                     |
-| `HOST`              | No       | `127.0.0.1` | Bind address                    |
-| `LOG_LEVEL`         | No       | `INFO`      | Logging level                   |
-| `API_BASE_URL`      | No       | --          | Internal API URL                |
+| Variable            | Required | Default     | Description                  |
+| ------------------- | -------- | ----------- | ---------------------------- |
+| `DATABASE_URL`      | Yes      | --          | PostgreSQL connection string |
+| `OPENAI_API_KEY`    | No\*     | --          | OpenAI API key               |
+| `ANTHROPIC_API_KEY` | No\*     | --          | Anthropic API key            |
+| `PORT`              | No       | `8000`      | Server port                  |
+| `HOST`              | No       | `127.0.0.1` | Bind address                 |
+| `LOG_LEVEL`         | No       | `INFO`      | Logging level                |
+| `API_BASE_URL`      | No       | --          | Internal API URL             |
 
-*At least one AI provider key is required for AI features to work.
+\*At least one AI provider key is required for AI features to work.
 
 ---
 
@@ -528,6 +580,7 @@ cat api/.env | grep -v '^#' | grep -v '^$'
 **Symptom:** `Can't reach database server` or `ECONNREFUSED`
 
 **Fix:**
+
 - If using Supabase, verify the connection string from Dashboard > Settings > Database.
 - If using Docker, make sure the container is running: `docker compose ps`
 - If using local Postgres, confirm the service is running: `pg_isready`
@@ -607,6 +660,7 @@ npx prisma migrate reset       # WARNING: destroys all data
 ```
 
 This will:
+
 1. Drop the database
 2. Create it again
 3. Apply all migrations

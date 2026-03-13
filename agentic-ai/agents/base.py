@@ -32,8 +32,8 @@ class AgentDependencies:
 
 
 def create_agent(
-    model: str = "anthropic:claude-sonnet-4-20250514",
-    system_prompt: str = "You are a helpful assistant.",
+    model: str = 'anthropic:claude-sonnet-4-20250514',
+    system_prompt: str = 'You are a helpful assistant.',
     retries: int = 2,
 ) -> Agent[AgentDependencies, AgentResponse]:
     """Create a pre-configured Pydantic AI agent.
@@ -61,5 +61,5 @@ def create_agent(
 
         return datetime.now(timezone.utc).isoformat()
 
-    logger.debug("Created agent with model=%s", model)
+    logger.debug('Created agent with model=%s', model)
     return agent

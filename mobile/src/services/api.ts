@@ -24,7 +24,7 @@ function createApiClient(): AxiosInstance {
   // Inject auth token on every request
   client.interceptors.request.use(
     async (
-      requestConfig: InternalAxiosRequestConfig
+      requestConfig: InternalAxiosRequestConfig,
     ): Promise<InternalAxiosRequestConfig> => {
       try {
         const {
@@ -38,7 +38,7 @@ function createApiClient(): AxiosInstance {
         // Proceed without auth header if token retrieval fails
       }
       return requestConfig;
-    }
+    },
   );
 
   // Response error handling
@@ -61,7 +61,7 @@ function createApiClient(): AxiosInstance {
       }
 
       return Promise.reject(error);
-    }
+    },
   );
 
   return client;

@@ -1,18 +1,18 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EnvelopeIcon,
   LockClosedIcon,
   UserIcon,
-} from '@heroicons/react/24/outline';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAlert } from '@/contexts/AlertContext';
+} from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAlert } from "@/contexts/AlertContext";
 
 export default function SignUpPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signUp } = useAuth();
   const { showAlert } = useAlert();
@@ -22,17 +22,17 @@ export default function SignUpPage() {
     e.preventDefault();
 
     if (!email || !password || !name) {
-      showAlert('Please fill in all fields.', 'warning');
+      showAlert("Please fill in all fields.", "warning");
       return;
     }
 
     if (password.length < 8) {
-      showAlert('Password must be at least 8 characters.', 'warning');
+      showAlert("Password must be at least 8 characters.", "warning");
       return;
     }
 
     if (password !== confirmPassword) {
-      showAlert('Passwords do not match.', 'warning');
+      showAlert("Passwords do not match.", "warning");
       return;
     }
 
@@ -40,16 +40,16 @@ export default function SignUpPage() {
     try {
       await signUp(email, password, name);
       showAlert(
-        'Account created! Please check your email to verify your account.',
-        'success',
+        "Account created! Please check your email to verify your account.",
+        "success",
       );
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
       const message =
         err instanceof Error
           ? err.message
-          : 'Sign up failed. Please try again.';
-      showAlert(message, 'error');
+          : "Sign up failed. Please try again.";
+      showAlert(message, "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -184,13 +184,13 @@ export default function SignUpPage() {
               />
             </svg>
           ) : (
-            'Create Account'
+            "Create Account"
           )}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-secondary-500">
-        Already have an account?{' '}
+        Already have an account?{" "}
         <Link
           to="/login"
           className="font-medium text-primary-600 transition-colors hover:text-primary-700"

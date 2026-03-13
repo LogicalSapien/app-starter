@@ -27,7 +27,10 @@ router.get(
   async (req: AuthenticatedRequest, res) => {
     try {
       const page = Math.max(1, parseInt(req.query.page as string) || 1);
-      const limit = Math.min(200, Math.max(1, parseInt(req.query.limit as string) || 50));
+      const limit = Math.min(
+        200,
+        Math.max(1, parseInt(req.query.limit as string) || 50),
+      );
 
       const filters: {
         userId?: string;
@@ -59,7 +62,11 @@ router.get(
         }
       }
 
-      const { logs, total } = await auditService.getAuditLogs(page, limit, filters);
+      const { logs, total } = await auditService.getAuditLogs(
+        page,
+        limit,
+        filters,
+      );
 
       res.json({
         data: logs,

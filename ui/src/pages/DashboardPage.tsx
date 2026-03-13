@@ -3,26 +3,26 @@ import {
   UsersIcon,
   DocumentTextIcon,
   CogIcon,
-} from '@heroicons/react/24/outline';
-import { useAuth } from '@/contexts/AuthContext';
+} from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
 
 const stats = [
-  { name: 'Total Users', value: '---', icon: UsersIcon, color: 'primary' },
+  { name: "Total Users", value: "---", icon: UsersIcon, color: "primary" },
   {
-    name: 'Documents',
-    value: '---',
+    name: "Documents",
+    value: "---",
     icon: DocumentTextIcon,
-    color: 'success',
+    color: "success",
   },
-  { name: 'Analytics', value: '---', icon: ChartBarIcon, color: 'warning' },
-  { name: 'Settings', value: '---', icon: CogIcon, color: 'secondary' },
+  { name: "Analytics", value: "---", icon: ChartBarIcon, color: "warning" },
+  { name: "Settings", value: "---", icon: CogIcon, color: "secondary" },
 ];
 
 const colorMap: Record<string, string> = {
-  primary: 'bg-primary-100 text-primary-600',
-  success: 'bg-success-100 text-success-600',
-  warning: 'bg-warning-100 text-warning-600',
-  secondary: 'bg-secondary-100 text-secondary-600',
+  primary: "bg-primary-100 text-primary-600",
+  success: "bg-success-100 text-success-600",
+  warning: "bg-warning-100 text-warning-600",
+  secondary: "bg-secondary-100 text-secondary-600",
 };
 
 export default function DashboardPage() {
@@ -33,7 +33,7 @@ export default function DashboardPage() {
       {/* Welcome section */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-secondary-900">
-          Welcome back{user?.name ? `, ${user.name}` : ''}
+          Welcome back{user?.name ? `, ${user.name}` : ""}
         </h1>
         <p className="mt-1 text-secondary-500">
           Here&apos;s an overview of your application.
@@ -81,7 +81,9 @@ export default function DashboardPage() {
               Quick Setup Checklist
             </h3>
             <ul className="list-inside list-disc space-y-1.5 text-secondary-500">
-              <li>Configure your Supabase project and add environment variables</li>
+              <li>
+                Configure your Supabase project and add environment variables
+              </li>
               <li>Set up your API backend and update VITE_API_URL</li>
               <li>Add your application routes and pages</li>
               <li>Customize the sidebar navigation in MainLayout</li>

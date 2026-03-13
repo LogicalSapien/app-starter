@@ -1,21 +1,141 @@
 # App Starter
 
-A production-ready full-stack starter template with API, Web, Mobile, and AI services -- everything you need to launch a modern application.
+A full-stack starter template with API, Web, Mobile, and AI services — clone it and start building.
 
 [![CI Tests](https://github.com/LogicalSapien/app-starter/actions/workflows/tests.yml/badge.svg)](https://github.com/LogicalSapien/app-starter/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
-## Overview
+## What You Get
 
-App Starter is an opinionated monorepo template that provides a complete foundation for building full-stack applications. It includes a Node.js API, React web app, React Native mobile app, and a Python AI microservice -- all pre-configured with authentication, testing, CI/CD, Docker, and development tooling.
+| Service        | Stack                                     | Port |
+| -------------- | ----------------------------------------- | ---- |
+| **API**        | Node.js, Express, TypeScript, Prisma, Zod | 3001 |
+| **UI**         | React 18, Vite, Tailwind, TanStack Query  | 5173 |
+| **Mobile**     | React Native, Expo SDK 54, Expo Router    | 8081 |
+| **AI Service** | Python, FastAPI, Pydantic AI              | 8000 |
+| **Database**   | PostgreSQL 15+ (via Prisma ORM)           | 5432 |
+| **Auth**       | Supabase Authentication                   | --   |
 
-**Who is this for?**
+Plus: RBAC, audit logging, security middleware (Helmet, CORS, CSRF, rate limiting), CI/CD, Docker, pre-commit hooks, and structured logging.
 
-- Developers starting a new full-stack project who want to skip boilerplate setup
-- Teams that need a consistent, tested foundation across web, mobile, and backend
-- Anyone building AI-powered applications with a production-grade architecture
+---
+
+## Quick Start
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org) 20+
+- [Python](https://python.org) 3.13+
+- [Docker](https://docker.com) (for PostgreSQL)
+- [Supabase](https://supabase.com) account (free tier works)
+
+### 1. Clone
+
+```bash
+git clone https://github.com/LogicalSapien/app-starter.git
+cd app-starter
+```
+
+### 2. Start PostgreSQL
+
+```bash
+docker compose up postgres -d
+```
+
+### 3. Configure environment
+
+You can use either **Doppler** (recommended for teams) or **.env files** (simpler for local dev). Both work — pick whichever suits you.
+
+<details>
+<summary><strong>Option A: Using .env files (simple)</strong></summary>
+
+```bash
+# API
+cd api
+cp env.example .env        # Edit with your Supabase credentials and DATABASE_URL
+npm install
+npx prisma generate
+npx prisma migrate dev
+
+# UI
+cd ../ui
+cp env.example .env        # Set VITE_API_URL and Supabase keys
+npm install
+
+# Mobile
+cd ../mobile
+cp env.example .env        # Set API_BASE_URL and Supabase keys
+npm install
+
+# AI Service
+cd ../agentic-ai
+cp env.example .env        # Set DATABASE_URL and AI provider keys
+pip install -r requirements.txt
+```
+
+Each `env.example` file is fully commented with every variable explained.
+
+</details>
+
+<details>
+<summary><strong>Option B: Using Doppler (recommended for teams)</strong></summary>
+
+Install [Doppler CLI](https://docs.doppler.com/docs/install-cli), then:
+
+```bash
+doppler login
+doppler setup              # Select your project and dev config
+
+# API
+cd api && npm install
+doppler run -- npx prisma generate
+doppler run -- npx prisma migrate dev
+
+# UI
+cd ../ui && npm install
+
+# Mobile
+cd ../mobile && npm install
+
+# AI Service
+cd ../agentic-ai
+pip install -r requirements.txt
+```
+
+Doppler injects env vars at runtime — no `.env` files needed.
+
+</details>
+
+### 4. Run
+
+Start all services:
+
+```bash
+# From project root
+chmod +x scripts/start-local-dev.sh
+./scripts/start-local-dev.sh
+```
+
+Or start individually:
+
+```bash
+cd api && npm run dev          # http://localhost:3001
+cd ui && npm run dev           # http://localhost:5173
+cd mobile && npx expo start   # Expo dev tools
+```
+
+### 5. Verify
+
+```bash
+curl http://localhost:3001/api/health
+# {"status":"ok", ...}
+```
+
+Open http://localhost:5173 to see the UI.
+
+For the full setup guide (Supabase account, database seeding, troubleshooting), see [docs/SETUP.md](docs/SETUP.md).
 
 ---
 
@@ -50,402 +170,71 @@ App Starter is an opinionated monorepo template that provides a complete foundat
 
 ---
 
-## Tech Stack
-
-| Service       | Stack                                      | Port  |
-|---------------|--------------------------------------------|-------|
-| **API**       | Node.js, Express, TypeScript, Prisma, Zod  | 3001  |
-| **UI**        | React 18, Vite, Tailwind CSS, TanStack Query | 5173 |
-| **Mobile**    | React Native, Expo SDK 54, Expo Router     | 8081  |
-| **AI Service**| Python, FastAPI, Pydantic AI               | 8000  |
-| **Database**  | PostgreSQL 15+ (via Prisma ORM)            | 5432  |
-| **Auth**      | Supabase Authentication                    | --    |
-
----
-
-## Quick Start
-
-Get up and running in under 5 minutes.
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org) 20+ (recommend [nvm](https://github.com/nvm-sh/nvm))
-- [Python](https://python.org) 3.13+ (recommend [pyenv](https://github.com/pyenv/pyenv))
-- [Supabase](https://supabase.com) account (free tier works)
-- [Docker](https://docker.com) (optional, for containerised development)
-- [Doppler CLI](https://docs.doppler.com/docs/install-cli) (optional, for secrets management)
-
-### 1. Clone and install
-
-```bash
-git clone https://github.com/LogicalSapien/app-starter.git
-cd app-starter
-```
-
-### 2. Start the database
-
-```bash
-docker compose up postgres -d
-```
-
-### 3. Configure the API
-
-**With Doppler (recommended):**
-
-```bash
-doppler login
-doppler setup                 # Select your project and dev config
-cd api && doppler run -- npx prisma generate && doppler run -- npx prisma migrate dev
-```
-
-**Without Doppler:**
-
-```bash
-cd api
-cp env.example .env          # Edit with your Supabase credentials
-npm install
-npx prisma generate
-npx prisma migrate dev
-```
-
-### 4. Start all services
-
-```bash
-# From the project root
-chmod +x scripts/start-local-dev.sh
-./scripts/start-local-dev.sh
-```
-
-The script auto-detects Doppler and uses it when available. Or start services individually:
-
-```bash
-cd api && npm run dev          # API        -> http://localhost:3001
-cd ui && npm run dev           # Web UI     -> http://localhost:5173
-cd mobile && npx expo start   # Mobile     -> Expo dev tools
-```
-
-### 5. Verify
-
-```bash
-curl http://localhost:3001/api/health    # Should return {"status":"ok", ...}
-```
-
-Open http://localhost:5173 to see the UI.
-
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide (Supabase account creation, Doppler configuration, database seeding, troubleshooting).
-
----
-
 ## Project Structure
 
 ```
 app-starter/
-|
-|-- api/                       # Backend API
-|   |-- src/
-|   |   |-- index.ts           # Entry point
-|   |   |-- routes/            # Route definitions
-|   |   |-- services/          # Business logic
-|   |   +-- middleware/        # Auth, validation, errors
+|-- api/                       # Backend API (Express, TypeScript)
+|   |-- src/routes/            # Route definitions
+|   |-- src/services/          # Business logic
+|   |-- src/middleware/        # Auth, RBAC, CSRF, validation
 |   |-- prisma/                # Schema, migrations, seed
-|   |-- tests/                 # Test suite
-|   |-- Dockerfile
-|   +-- package.json
+|   +-- tests/
 |
-|-- ui/                        # Web frontend
-|   |-- src/
-|   |   |-- components/        # Shared UI components
-|   |   |-- pages/             # Route-level components
-|   |   |-- hooks/             # Custom hooks
-|   |   +-- services/          # API client
-|   |-- Dockerfile
-|   +-- package.json
+|-- ui/                        # Web frontend (React, Vite)
+|   |-- src/pages/             # Route-level components
+|   |-- src/components/        # Shared UI components
+|   +-- src/hooks/
 |
-|-- mobile/                    # Mobile app
-|   |-- app/                   # Expo Router file-based routes
-|   |-- components/            # Shared components
-|   |-- hooks/                 # Custom hooks
-|   |-- services/              # API client
-|   +-- package.json
+|-- mobile/                    # Mobile app (Expo, React Native)
+|   |-- app/                   # File-based routes
+|   +-- components/
 |
-|-- agentic-ai/                # AI microservice
-|   |-- api/                   # FastAPI routes
+|-- agentic-ai/                # AI microservice (FastAPI, Python)
 |   |-- agents/                # AI agent definitions
-|   |-- models/                # Pydantic models
 |   |-- services/              # Business logic
-|   +-- tests/                 # Test suite
+|   +-- tests/
 |
-|-- .github/workflows/         # CI/CD pipelines
-|-- docs/                      # Documentation
-|-- scripts/                   # Development scripts
-|-- docker-compose.yml         # Container orchestration
-|-- .pre-commit-config.yaml    # Code quality hooks
-+-- CLAUDE.md                  # AI assistant rules
+|-- docs/                      # Detailed documentation
+|-- scripts/                   # Dev scripts
+|-- docker-compose.yml
++-- .pre-commit-config.yaml
 ```
-
----
-
-## What's Included
-
-Everything you need for a production application, pre-wired and ready to extend:
-
-| Category             | Features                                                                 |
-|----------------------|--------------------------------------------------------------------------|
-| **Authentication**   | Supabase Auth (email/password, OAuth, magic links), JWT verification     |
-| **Authorization**    | RBAC with roles, permissions, user assignment, in-memory caching         |
-| **Audit Logging**    | AuditLog table for tracking user actions, IP, user agent, details        |
-| **Security**         | Helmet headers, CORS, CSRF protection, rate limiting                     |
-| **Database**         | Prisma ORM, PostgreSQL, migrations, seeding, connection retry            |
-| **Health Checks**    | `/health`, `/api/health`, `/api/health/database` endpoints               |
-| **Structured Logging** | Leveled logger (ERROR/WARN/INFO/DEBUG) with coloured console output   |
-| **Docker**           | Production Dockerfiles, docker-compose.yml, PostgreSQL with health checks |
-| **CI/CD**            | GitHub Actions with per-service change detection, coverage thresholds    |
-| **Pre-commit Hooks** | Trailing whitespace, JSON/YAML check, Black, isort, flake8, Prettier    |
-| **Secrets Management** | Doppler integration (optional, fallback to .env files)                 |
-
----
-
-## Features
-
-### Authentication
-
-- Supabase Auth integration with JWT verification
-- Supports email/password, OAuth providers, and magic links
-- Middleware for protected routes with user context extraction
-- See [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md) for the complete auth lifecycle
-
-### RBAC (Role-Based Access Control)
-
-- **Roles and Permissions** -- Assign roles to users, grant permissions to roles
-- **Permission format** -- `resource:action` (e.g., `user:read`, `role:manage`)
-- **Default roles** -- Automatically assigned to new users on signup
-- **In-memory caching** -- 5-minute TTL to reduce database queries
-- **Full CRUD** -- Create, update, delete roles and permissions via service layer
-- See [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md#rbac-system) for details
-
-### API Security Stack
-
-- **Helmet** -- Security headers (XSS, HSTS, CSP, content sniffing)
-- **CORS** -- Configurable allowed origins via `FRONTEND_URLS`
-- **CSRF Protection** -- `X-Requested-With` header required for mutations
-- **Rate Limiting** -- Per-IP request throttling via express-rate-limit
-- **Structured Logging** -- Custom logger with levels and response timing
-- **Zod Validation** -- Type-safe request body validation
-- See [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md#security-layers) for the full middleware pipeline
-
-### Database
-
-- **Prisma ORM** -- Type-safe database access with auto-generated client
-- **PostgreSQL 15+** -- Production-grade relational database
-- **Migrations** -- Version-controlled schema changes
-- **Seeding** -- Reproducible development data
-
-### Web UI
-
-- **React 18** with functional components and hooks
-- **Vite 6** for fast builds and HMR
-- **Tailwind CSS 3** for utility-first styling
-- **React Router 6** for client-side routing
-- **TanStack Query** for server state management
-- **Headless UI + Heroicons** for accessible components
-- **Code splitting** via lazy loading
-
-### Mobile
-
-- **Expo SDK 54** with managed workflow
-- **Expo Router 5** for file-based navigation
-- **TanStack Query** for data fetching (mirrors web patterns)
-- **Zustand** for client-side state
-- **AsyncStorage** for persistent local data
-
-### AI Service
-
-- **FastAPI** for high-performance async API
-- **Pydantic AI** for structured AI agent development
-- **Multi-provider support** -- OpenAI and Anthropic
-- **Type-safe models** via Pydantic v2
-
-### CI/CD
-
-- **GitHub Actions** workflow with per-service change detection
-- Runs only affected test suites on push
-- Coverage thresholds enforced per service
-- Manual workflow dispatch with per-service toggles
-- Coverage artifacts uploaded for review
-
-### Docker
-
-- Production-ready Dockerfiles for API and UI
-- `docker-compose.yml` for full-stack local development
-- PostgreSQL service with health checks and persistent volumes
-
-### Code Quality
-
-- **Pre-commit hooks** -- trailing whitespace, JSON/YAML validation, merge conflict detection
-- **Python** -- Black, isort, flake8, bandit, pyupgrade
-- **JavaScript/TypeScript** -- Prettier, ESLint
-- **Type checking** -- TypeScript strict mode, Python type hints
-
-### Testing
-
-| Service     | Framework                     | Coverage Target |
-|-------------|-------------------------------|-----------------|
-| API         | Jest + Supertest              | 60%             |
-| UI          | Jest + React Testing Library  | 15%             |
-| Mobile      | Jest + RN Testing Library     | 60%             |
-| Agentic AI  | pytest + pytest-cov           | 95%             |
-
----
-
-## Documentation
-
-| Document                                              | Description                                                     |
-|-------------------------------------------------------|-----------------------------------------------------------------|
-| [docs/SETUP.md](docs/SETUP.md)                       | Full setup guide: Supabase, Doppler, database, all services     |
-| [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md)                | Authentication lifecycle, JWT structure, RBAC system             |
-| [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md)         | How services connect, security layers, adding new features       |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)          | System diagram, service responsibilities, deployment options     |
-| [docs/NAMING_CONVENTIONS.md](docs/NAMING_CONVENTIONS.md) | Naming and code style rules for all languages                 |
 
 ---
 
 ## Customization
 
-This template is designed to be forked and adapted for your specific project.
-
 ### Rename the project
 
-1. Update `name` in each `package.json` (`api/`, `ui/`, `mobile/`)
+1. Update `name` in each `package.json`
 2. Update the database name in `docker-compose.yml`
 3. Update the Expo app name in `mobile/app.config.ts`
-4. Replace references to "app-starter" throughout
 
-### Add a new API route
+### Add a new feature
 
-```bash
-# Create the route, service, and test files
-api/src/routes/my-feature.ts
-api/src/services/my-feature-service.ts
-api/tests/my-feature.test.ts
-```
+See [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md#adding-a-new-feature-end-to-end-example) for a complete end-to-end walkthrough (route, service, tests, RBAC, UI, mobile).
 
-Then mount it in `api/src/index.ts`:
+### Keep up with upstream
 
-```typescript
-import myFeatureRoutes from "./routes/my-feature.js";
-app.use("/api/my-feature", myFeatureRoutes);
-```
-
-Add RBAC permissions in `api/prisma/seed.ts` and protect routes with `authenticateUser` + `hasPermission()`. See [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md#adding-a-new-feature-end-to-end-example) for a complete walkthrough.
-
-### Add a new UI page
+If you created your project from this template:
 
 ```bash
-# Create the page component and add a route in React Router
-ui/src/pages/MyFeature.tsx
-```
-
-### Add a new mobile screen
-
-```bash
-# Expo Router uses file-based routing
-mobile/app/my-feature.tsx
-```
-
-### Add a new AI agent
-
-```bash
-# Create the agent definition and service
-agentic-ai/agents/my_agent.py
-agentic-ai/services/my_service.py
-agentic-ai/tests/test_my_agent.py
-```
-
----
-
-## Keeping Up with Upstream
-
-If you forked this template, you can pull in future improvements:
-
-```bash
-# Add the starter as a remote (one-time)
 git remote add starter https://github.com/LogicalSapien/app-starter.git
-
-# Fetch and merge updates
 git fetch starter
 git merge starter/main --allow-unrelated-histories
 ```
 
-Resolve any conflicts, test, and commit.
-
 ---
 
-## Environment Variables
+## Documentation
 
-Full reference for all environment variables across services.
-
-### API
-
-| Variable                    | Required | Description                         |
-|-----------------------------|----------|-------------------------------------|
-| `PORT`                      | No       | Server port (default: 3001)         |
-| `NODE_ENV`                  | No       | Environment (default: development)  |
-| `DATABASE_URL`              | Yes      | PostgreSQL connection string        |
-| `SUPABASE_URL`              | Yes      | Supabase project URL                |
-| `SUPABASE_ANON_KEY`         | Yes      | Supabase anonymous key              |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes      | Supabase service role key           |
-| `FRONTEND_URLS`             | No       | Allowed CORS origins                |
-| `RATE_LIMIT_ENABLED`        | No       | Enable rate limiting (default: true)|
-| `LOG_LEVEL`                 | No       | Logging level (default: INFO)       |
-| `SENTRY_DSN`                | No       | Sentry error tracking DSN           |
-
-### UI
-
-| Variable                  | Required | Description               |
-|---------------------------|----------|---------------------------|
-| `VITE_API_URL`            | Yes      | API base URL              |
-| `VITE_SUPABASE_URL`       | Yes      | Supabase project URL      |
-| `VITE_SUPABASE_ANON_KEY`  | Yes      | Supabase anonymous key    |
-
-### Agentic AI
-
-| Variable           | Required | Description               |
-|--------------------|----------|---------------------------|
-| `DATABASE_URL`     | Yes      | PostgreSQL connection string |
-| `OPENAI_API_KEY`   | No       | OpenAI API key            |
-| `ANTHROPIC_API_KEY`| No       | Anthropic API key         |
-| `API_BASE_URL`     | No       | Internal API URL          |
-
----
-
-## Deployment
-
-### Docker (Recommended)
-
-Build and deploy the Docker images to any container platform:
-
-```bash
-# Build all images
-docker compose build
-
-# Push to your container registry
-docker tag app-starter-api:latest your-registry/api:latest
-docker push your-registry/api:latest
-```
-
-### Platform Recommendations
-
-| Service     | Platform                                 |
-|-------------|------------------------------------------|
-| API         | Railway, Render, Fly.io, AWS ECS         |
-| UI          | Vercel, Netlify, Cloudflare Pages        |
-| AI Service  | Railway, Render, Google Cloud Run        |
-| Database    | Supabase, Neon, Railway Postgres         |
-| Mobile      | Expo EAS Build + App Store / Play Store  |
-
-### CI/CD
-
-The included GitHub Actions workflow (`.github/workflows/tests.yml`) automatically runs tests on push and pull request. Extend it with deployment steps for your platform of choice.
+| Document                                     | Description                               |
+| -------------------------------------------- | ----------------------------------------- |
+| [docs/SETUP.md](docs/SETUP.md)               | Full setup guide with troubleshooting     |
+| [docs/AUTH_FLOW.md](docs/AUTH_FLOW.md)       | Auth lifecycle, JWT, RBAC system          |
+| [docs/WIRING_GUIDE.md](docs/WIRING_GUIDE.md) | How services connect, adding new features |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System diagram, deployment options        |
 
 ---
 
@@ -453,16 +242,15 @@ The included GitHub Actions workflow (`.github/workflows/tests.yml`) automatical
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/my-feature`)
-3. Make your changes following the [naming conventions](docs/NAMING_CONVENTIONS.md)
-4. Run tests and linting (`pre-commit run --all-files`)
-5. Commit using [conventional commits](https://www.conventionalcommits.org/) (`feat(api): add user endpoint`)
-6. Push and open a pull request
+3. Run `pre-commit run --all-files` before committing
+4. Use [conventional commits](https://www.conventionalcommits.org/) (`feat(api): add user endpoint`)
+5. Open a pull request
 
 ---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT License](LICENSE)
 
 ---
 

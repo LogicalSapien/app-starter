@@ -5,10 +5,10 @@ import {
   useState,
   useCallback,
   type ReactNode,
-} from 'react';
-import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
-import type { User } from '@/types';
+} from "react";
+import type { Session, User as SupabaseUser } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
+import type { User } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 function mapSupabaseUser(supabaseUser: SupabaseUser): User {
   return {
     id: supabaseUser.id,
-    email: supabaseUser.email ?? '',
+    email: supabaseUser.email ?? "",
     name:
       supabaseUser.user_metadata?.name ??
       supabaseUser.user_metadata?.full_name ??
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

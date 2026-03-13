@@ -88,12 +88,12 @@ Destructive git ops require explicit user instruction.
 
 Keep changes consistent with project layout:
 
-| Directory      | Stack                        | Notes                              |
-|----------------|------------------------------|------------------------------------|
-| `agentic-ai/`  | Python, FastAPI, Pydantic AI | snake_case, typed, small modules   |
-| `api/`          | Node, Express, TypeScript    | Services not controllers, Prisma   |
-| `ui/`           | React, Vite, Tailwind        | Functional components, clean hooks |
-| `mobile/`       | React Native, Expo           | Mirror UI patterns                 |
+| Directory     | Stack                        | Notes                              |
+| ------------- | ---------------------------- | ---------------------------------- |
+| `agentic-ai/` | Python, FastAPI, Pydantic AI | snake_case, typed, small modules   |
+| `api/`        | Node, Express, TypeScript    | Services not controllers, Prisma   |
+| `ui/`         | React, Vite, Tailwind        | Functional components, clean hooks |
+| `mobile/`     | React Native, Expo           | Mirror UI patterns                 |
 
 Do not invent new architecture or services unless explicitly asked.
 

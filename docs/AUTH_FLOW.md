@@ -8,13 +8,13 @@ How identity, sessions, and permissions work across the stack.
 
 Authentication and authorization in this project are split across two systems:
 
-| Concern              | Handled by       | Details                                         |
-|----------------------|------------------|-------------------------------------------------|
-| **Identity**         | Supabase Auth    | Signup, login, password reset, OAuth, JWT issue  |
-| **Session storage**  | Supabase JS SDK  | Auto-persists tokens in localStorage / SecureStore |
-| **JWT validation**   | API middleware    | Verifies tokens on every protected request       |
-| **User records**     | API + PostgreSQL  | Local `users` table synced after first login     |
-| **RBAC**             | API service layer | Role-based access control via Prisma models      |
+| Concern             | Handled by        | Details                                            |
+| ------------------- | ----------------- | -------------------------------------------------- |
+| **Identity**        | Supabase Auth     | Signup, login, password reset, OAuth, JWT issue    |
+| **Session storage** | Supabase JS SDK   | Auto-persists tokens in localStorage / SecureStore |
+| **JWT validation**  | API middleware    | Verifies tokens on every protected request         |
+| **User records**    | API + PostgreSQL  | Local `users` table synced after first login       |
+| **RBAC**            | API service layer | Role-based access control via Prisma models        |
 
 The frontend never talks to the database directly. All data flows through the API, which validates the JWT before executing any business logic.
 
@@ -43,18 +43,18 @@ Step  Actor        Action
 14    UI           Redirects to /dashboard
 ```
 
-*Steps 3-4 (email confirmation) can be disabled in Supabase during development: Authentication > Providers > Email > disable "Confirm email".
+\*Steps 3-4 (email confirmation) can be disabled in Supabase during development: Authentication > Providers > Email > disable "Confirm email".
 
 ### Relevant code paths
 
-| Step | File                                          |
-|------|-----------------------------------------------|
-| 2    | `ui/src/contexts/AuthContext.tsx` -- `signUp`  |
-| 6    | `ui/src/contexts/AuthContext.tsx` -- `signIn`  |
-| 8    | `ui/src/lib/supabase.ts` -- Supabase client config |
-| 9    | `ui/src/lib/api.ts` -- `ApiClient.post()`     |
-| 10   | `api/src/middleware/auth.ts` -- `authenticateUser` |
-| 11   | `api/src/services/user-service.ts` -- `upsertByEmail` |
+| Step | File                                                       |
+| ---- | ---------------------------------------------------------- |
+| 2    | `ui/src/contexts/AuthContext.tsx` -- `signUp`              |
+| 6    | `ui/src/contexts/AuthContext.tsx` -- `signIn`              |
+| 8    | `ui/src/lib/supabase.ts` -- Supabase client config         |
+| 9    | `ui/src/lib/api.ts` -- `ApiClient.post()`                  |
+| 10   | `api/src/middleware/auth.ts` -- `authenticateUser`         |
+| 11   | `api/src/services/user-service.ts` -- `upsertByEmail`      |
 | 12   | `api/src/services/rbac-service.ts` -- `assignDefaultRoles` |
 
 ---
@@ -144,15 +144,15 @@ Supabase issues standard JWTs. A decoded token looks like this:
 }
 ```
 
-| Field              | Description                                              |
-|--------------------|----------------------------------------------------------|
-| `sub`              | User's UUID -- used as the primary key in the local `users` table |
-| `email`            | User's email address                                     |
-| `exp`              | Expiration timestamp (Unix epoch). Default: 1 hour       |
-| `aud`              | Audience -- always `authenticated` for logged-in users   |
-| `role`             | Supabase role (not the same as your app's RBAC roles)    |
-| `app_metadata`     | Auth provider info (email, google, github, etc.)         |
-| `user_metadata`    | Custom data set during signup (name, avatar, etc.)       |
+| Field           | Description                                                       |
+| --------------- | ----------------------------------------------------------------- |
+| `sub`           | User's UUID -- used as the primary key in the local `users` table |
+| `email`         | User's email address                                              |
+| `exp`           | Expiration timestamp (Unix epoch). Default: 1 hour                |
+| `aud`           | Audience -- always `authenticated` for logged-in users            |
+| `role`          | Supabase role (not the same as your app's RBAC roles)             |
+| `app_metadata`  | Auth provider info (email, google, github, etc.)                  |
+| `user_metadata` | Custom data set during signup (name, avatar, etc.)                |
 
 ### Token lifecycle
 
@@ -194,15 +194,15 @@ Roles with `isDefault: true` are automatically assigned to new users during sign
 
 Permissions follow the pattern `resource:action`:
 
-| Permission      | Description                     |
-|-----------------|---------------------------------|
-| `user:read`     | View user profiles              |
-| `user:create`   | Create new users                |
-| `user:update`   | Edit user profiles              |
-| `user:delete`   | Delete users                    |
-| `user:manage`   | Full control over users         |
-| `role:read`     | View roles and permissions      |
-| `role:manage`   | Create/edit/delete roles        |
+| Permission    | Description                |
+| ------------- | -------------------------- |
+| `user:read`   | View user profiles         |
+| `user:create` | Create new users           |
+| `user:update` | Edit user profiles         |
+| `user:delete` | Delete users               |
+| `user:manage` | Full control over users    |
+| `role:read`   | View roles and permissions |
+| `role:manage` | Create/edit/delete roles   |
 
 ### Checking permissions in routes
 
@@ -234,7 +234,11 @@ import { hasPermission } from "../services/rbac-service.js";
 import { AuthenticatedRequest } from "../types/index.js";
 
 export function requirePermission(permissionName: string) {
-  return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  return async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
     if (!req.user?.id) {
       return res.status(401).json({ error: "Not authenticated" });
     }
@@ -252,14 +256,20 @@ export function requirePermission(permissionName: string) {
 Then use it on any route:
 
 ```typescript
-router.delete("/users/:id", authenticateUser, requirePermission("user:delete"), async (req, res) => {
-  // Only users with "user:delete" permission reach this handler
-});
+router.delete(
+  "/users/:id",
+  authenticateUser,
+  requirePermission("user:delete"),
+  async (req, res) => {
+    // Only users with "user:delete" permission reach this handler
+  },
+);
 ```
 
 ### How to add new permissions
 
 1. Add permission rows in `api/prisma/seed.ts`:
+
    ```typescript
    await prisma.permission.upsert({
      where: { name: "post:create" },
@@ -283,21 +293,21 @@ The RBAC service caches user permissions in memory with a **5-minute TTL** to av
 
 ### Available RBAC service functions
 
-| Function               | Description                                    |
-|------------------------|------------------------------------------------|
-| `getUserPermissions`   | Get all permission names for a user            |
-| `hasPermission`        | Check if a user has a specific permission      |
-| `hasRole`              | Check if a user has a specific role by name    |
-| `assignRole`           | Assign a role to a user                        |
-| `removeRole`           | Remove a role from a user                      |
-| `assignDefaultRoles`   | Assign all default roles to a user             |
-| `getRoles`             | List all roles with their permissions          |
-| `getRoleById`          | Get a single role by ID                        |
-| `createRole`           | Create a new role with optional permissions    |
-| `updateRole`           | Update role name, description, or default flag |
-| `deleteRole`           | Delete a role (cascades to assignments)        |
-| `setRolePermissions`   | Replace all permissions on a role              |
-| `getPermissions`       | List all available permissions                 |
+| Function             | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `getUserPermissions` | Get all permission names for a user            |
+| `hasPermission`      | Check if a user has a specific permission      |
+| `hasRole`            | Check if a user has a specific role by name    |
+| `assignRole`         | Assign a role to a user                        |
+| `removeRole`         | Remove a role from a user                      |
+| `assignDefaultRoles` | Assign all default roles to a user             |
+| `getRoles`           | List all roles with their permissions          |
+| `getRoleById`        | Get a single role by ID                        |
+| `createRole`         | Create a new role with optional permissions    |
+| `updateRole`         | Update role name, description, or default flag |
+| `deleteRole`         | Delete a role (cascades to assignments)        |
+| `setRolePermissions` | Replace all permissions on a role              |
+| `getPermissions`     | List all available permissions                 |
 
 ---
 
@@ -321,7 +331,13 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 All routes nested inside `<PrivateRoute>` require a valid session:
 
 ```tsx
-<Route element={<PrivateRoute><MainLayout /></PrivateRoute>}>
+<Route
+  element={
+    <PrivateRoute>
+      <MainLayout />
+    </PrivateRoute>
+  }
+>
   <Route path="/dashboard" element={<DashboardPage />} />
   <Route path="/profile" element={<ProfilePage />} />
 </Route>
@@ -334,11 +350,11 @@ To hide or disable UI elements based on permissions, fetch the user's permission
 ```tsx
 function AdminPanel() {
   const { data: permissions } = useQuery({
-    queryKey: ['my-permissions'],
-    queryFn: () => api.get('/auth/me/permissions'),
+    queryKey: ["my-permissions"],
+    queryFn: () => api.get("/auth/me/permissions"),
   });
 
-  if (!permissions?.includes('user:manage')) {
+  if (!permissions?.includes("user:manage")) {
     return null; // Hide from non-admins
   }
 
@@ -375,9 +391,9 @@ Go to Authentication > Providers and enable Google/GitHub. Enter the client ID a
 
 ```typescript
 const { error } = await supabase.auth.signInWithOAuth({
-  provider: 'google',         // or 'github'
+  provider: "google", // or 'github'
   options: {
-    redirectTo: window.location.origin + '/dashboard',
+    redirectTo: window.location.origin + "/dashboard",
   },
 });
 ```

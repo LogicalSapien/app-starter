@@ -55,7 +55,7 @@ export default function AuthScreen() {
         } else {
           Alert.alert(
             "Check Your Email",
-            "We sent you a confirmation link. Please verify your email to continue."
+            "We sent you a confirmation link. Please verify your email to continue.",
           );
         }
       }
@@ -154,9 +154,7 @@ export default function AuthScreen() {
               style={styles.toggleButton}
               onPress={toggleMode}
               accessibilityLabel={
-                mode === "login"
-                  ? "Switch to sign up"
-                  : "Switch to sign in"
+                mode === "login" ? "Switch to sign up" : "Switch to sign in"
               }
               accessibilityRole="button"
             >

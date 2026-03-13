@@ -1,12 +1,12 @@
-import { useState, type FormEvent } from 'react';
-import { UserCircleIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAlert } from '@/contexts/AlertContext';
+import { useState, type FormEvent } from "react";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAlert } from "@/contexts/AlertContext";
 
 export default function ProfilePage() {
   const { user } = useAuth();
   const { showAlert } = useAlert();
-  const [name, setName] = useState(user?.name ?? '');
+  const [name, setName] = useState(user?.name ?? "");
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -16,9 +16,9 @@ export default function ProfilePage() {
     try {
       // TODO: Implement profile update via API
       await new Promise((resolve) => setTimeout(resolve, 500));
-      showAlert('Profile updated successfully.', 'success');
+      showAlert("Profile updated successfully.", "success");
     } catch {
-      showAlert('Failed to update profile.', 'error');
+      showAlert("Failed to update profile.", "error");
     } finally {
       setIsSaving(false);
     }
@@ -40,7 +40,7 @@ export default function ProfilePage() {
             {user?.avatarUrl ? (
               <img
                 src={user.avatarUrl}
-                alt={user.name ?? 'User avatar'}
+                alt={user.name ?? "User avatar"}
                 className="h-20 w-20 rounded-full object-cover"
               />
             ) : (
@@ -49,7 +49,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-secondary-900">
-              {user?.name ?? 'User'}
+              {user?.name ?? "User"}
             </h2>
             <p className="text-sm text-secondary-500">{user?.email}</p>
           </div>
@@ -84,7 +84,7 @@ export default function ProfilePage() {
               <input
                 id="profile-email"
                 type="email"
-                value={user?.email ?? ''}
+                value={user?.email ?? ""}
                 disabled
                 className="block w-full rounded-lg border border-secondary-200 bg-secondary-50 px-3 py-2.5 text-sm text-secondary-500"
               />
@@ -100,7 +100,7 @@ export default function ProfilePage() {
               disabled={isSaving}
               className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isSaving ? 'Saving...' : 'Save Changes'}
+              {isSaving ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

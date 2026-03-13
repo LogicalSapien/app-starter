@@ -54,8 +54,7 @@ export const csrfProtection = (
 
     res.status(403).json({
       error: "CSRF validation failed",
-      message:
-        "Missing required security header for state-changing operations",
+      message: "Missing required security header for state-changing operations",
     });
     return;
   }

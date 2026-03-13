@@ -39,7 +39,9 @@ router.post("/register", async (req, res) => {
       });
 
     if (supabaseError) {
-      logger.error("Supabase registration error", { error: supabaseError.message });
+      logger.error("Supabase registration error", {
+        error: supabaseError.message,
+      });
       return res.status(400).json({ error: supabaseError.message });
     }
 
@@ -183,29 +185,33 @@ router.post("/signup", async (req, res) => {
  * POST /api/v1/auth/logout
  * Custom logout logic (e.g., invalidate server-side sessions).
  */
-router.post("/logout", authenticateUser, async (req: AuthenticatedRequest, res) => {
-  try {
-    const userId = req.user?.id;
+router.post(
+  "/logout",
+  authenticateUser,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user?.id;
 
-    await auditService.log(
-      userId ?? null,
-      "auth:logout",
-      "user",
-      userId,
-      null,
-      req,
-    );
+      await auditService.log(
+        userId ?? null,
+        "auth:logout",
+        "user",
+        userId,
+        null,
+        req,
+      );
 
-    logger.info("Logout endpoint called", { userId });
+      logger.info("Logout endpoint called", { userId });
 
-    res.json({
-      message: "Logged out successfully",
-    });
-  } catch (error: any) {
-    logger.error("Logout error:", error);
-    res.status(500).json({ error: "Logout failed" });
-  }
-});
+      res.json({
+        message: "Logged out successfully",
+      });
+    } catch (error: any) {
+      logger.error("Logout error:", error);
+      res.status(500).json({ error: "Logout failed" });
+    }
+  },
+);
 
 /**
  * GET /api/v1/auth/me

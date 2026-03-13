@@ -117,7 +117,9 @@ router.post(
       });
     } catch (error: any) {
       if (error.code === "P2002") {
-        return res.status(409).json({ error: "A role with that name already exists" });
+        return res
+          .status(409)
+          .json({ error: "A role with that name already exists" });
       }
       logger.error("Error creating role:", error);
       res.status(500).json({
@@ -166,7 +168,9 @@ router.put(
       });
     } catch (error: any) {
       if (error.code === "P2002") {
-        return res.status(409).json({ error: "A role with that name already exists" });
+        return res
+          .status(409)
+          .json({ error: "A role with that name already exists" });
       }
       logger.error("Error updating role:", error);
       res.status(500).json({

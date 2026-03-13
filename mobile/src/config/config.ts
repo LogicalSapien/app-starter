@@ -11,7 +11,7 @@ function getConfig(): AppConfig {
 
   if (!extra) {
     throw new Error(
-      "Missing Expo config extras. Ensure app.config.ts is configured correctly."
+      "Missing Expo config extras. Ensure app.config.ts is configured correctly.",
     );
   }
 

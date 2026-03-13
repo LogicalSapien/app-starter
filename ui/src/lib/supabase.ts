@@ -1,9 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
-import { config } from '@/config/config';
+import { createClient } from "@supabase/supabase-js";
+import { config } from "@/config/config";
 
 if (!config.supabaseUrl || !config.supabaseAnonKey) {
   console.warn(
-    'Supabase credentials not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
+    "Supabase credentials not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
   );
 }
 
