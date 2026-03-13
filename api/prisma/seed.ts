@@ -95,7 +95,7 @@ const DEFAULT_ROLES: {
   },
 ];
 
-async function main() {
+async function seed() {
   console.log("Seeding database...\n");
 
   // -----------------------------------------------------------------------
@@ -199,6 +199,35 @@ async function main() {
   }
 
   console.log("\nSeeding complete.");
+}
+
+async function main() {
+  // When `prisma migrate dev` auto-runs the seed immediately after applying
+  // migrations and regenerating the client, the Prisma query engine can
+  // fail to find newly created tables on its first connection. Retrying
+  // with a fresh connection resolves this race condition.
+  const MAX_ATTEMPTS = 3;
+  const RETRY_DELAY_MS = 2000;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      await prisma.$connect();
+      await seed();
+      return;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "";
+      const isTableMissing = msg.includes("does not exist");
+      if (isTableMissing && attempt < MAX_ATTEMPTS) {
+        console.log(
+          `Database schema not ready (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${RETRY_DELAY_MS / 1000}s...`,
+        );
+        await prisma.$disconnect();
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+      } else {
+        throw error;
+      }
+    }
+  }
 }
 
 main()
