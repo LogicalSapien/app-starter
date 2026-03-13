@@ -9,10 +9,11 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 import uvicorn
-from api.routes.health import router as health_router
-from config import config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from api.routes.health import router as health_router
+from config import config
 
 logger = logging.getLogger(__name__)
 
