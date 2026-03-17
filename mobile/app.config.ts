@@ -11,6 +11,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "appstarter",
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
+  runtimeVersion: {
+    policy: "appVersion",
+  },
+  updates: {
+    url: "https://u.expo.dev/your-eas-project-id",
+  },
   splash: {
     image: "./assets/splash-icon.png",
     resizeMode: "contain",
@@ -35,6 +41,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     "expo-router",
+    "expo-secure-store",
     [
       "expo-splash-screen",
       {

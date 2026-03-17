@@ -19,6 +19,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<AuthResult>;
   signUp: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<AuthResult>;
   supabase: typeof supabase;
 }
 
@@ -84,6 +85,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     await supabase.auth.signOut();
   }, []);
 
+  const resetPassword = useCallback(
+    async (email: string): Promise<AuthResult> => {
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      return { error };
+    },
+    [],
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -92,6 +101,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         signIn,
         signUp,
         signOut,
+        resetPassword,
         supabase,
       }}
     >

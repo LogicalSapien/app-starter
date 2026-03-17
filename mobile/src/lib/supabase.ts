@@ -5,7 +5,7 @@
  * stays in sync (a 401 in api.ts triggers the same client's sign-out).
  */
 import { createClient } from "@supabase/supabase-js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { secureStorage } from "@/lib/secure-storage";
 import { config } from "@/config/config";
 
 if (!config.supabaseUrl || !config.supabaseAnonKey) {
@@ -21,7 +21,7 @@ export const supabase = createClient(
   config.supabaseAnonKey,
   {
     auth: {
-      storage: AsyncStorage,
+      storage: secureStorage,
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,

@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Switch,
+} from "react-native";
+import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/contexts/AuthContext";
@@ -6,6 +14,7 @@ import { colors, spacing, radii } from "@/theme";
 
 export default function SettingsScreen() {
   const { signOut } = useAuth();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const handleSignOut = () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
@@ -20,6 +29,20 @@ export default function SettingsScreen() {
     ]);
   };
 
+  const handleAppearance = () => {
+    Alert.alert(
+      "Appearance",
+      "Theme switching is not yet implemented. Wire up your preferred theme solution here.",
+    );
+  };
+
+  const handlePrivacy = () => {
+    Alert.alert(
+      "Privacy",
+      "Privacy settings are not yet implemented. Add your privacy controls here.",
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={["left", "right"]}>
       <View style={styles.content}>
@@ -27,18 +50,26 @@ export default function SettingsScreen() {
           <Text style={styles.sectionTitle}>General</Text>
 
           <View style={styles.card}>
-            <TouchableOpacity style={styles.row} accessibilityRole="button">
+            <View style={styles.row}>
               <Text style={styles.rowLabel}>Notifications</Text>
-              <Ionicons
-                name="chevron-forward"
-                size={18}
-                color={colors.textPlaceholder}
+              <Switch
+                value={notificationsEnabled}
+                onValueChange={setNotificationsEnabled}
+                trackColor={{
+                  false: colors.border,
+                  true: colors.primary,
+                }}
+                accessibilityLabel="Toggle notifications"
               />
-            </TouchableOpacity>
+            </View>
 
             <View style={styles.divider} />
 
-            <TouchableOpacity style={styles.row} accessibilityRole="button">
+            <TouchableOpacity
+              style={styles.row}
+              onPress={handleAppearance}
+              accessibilityRole="button"
+            >
               <Text style={styles.rowLabel}>Appearance</Text>
               <Ionicons
                 name="chevron-forward"
@@ -49,7 +80,11 @@ export default function SettingsScreen() {
 
             <View style={styles.divider} />
 
-            <TouchableOpacity style={styles.row} accessibilityRole="button">
+            <TouchableOpacity
+              style={styles.row}
+              onPress={handlePrivacy}
+              accessibilityRole="button"
+            >
               <Text style={styles.rowLabel}>Privacy</Text>
               <Ionicons
                 name="chevron-forward"
