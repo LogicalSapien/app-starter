@@ -52,6 +52,10 @@ export const radii = {
   full: 9999,
 } as const;
 
+/**
+ * Typography tokens — use these in new screens instead of raw fontSize/fontWeight values.
+ * Example: { fontSize: typography.size["2xl"], fontWeight: typography.weight.bold }
+ */
 export const typography = {
   /** Size scale */
   size: {
