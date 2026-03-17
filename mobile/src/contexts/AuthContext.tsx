@@ -16,10 +16,12 @@ interface AuthResult {
 interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
+  isGuest: boolean;
   signIn: (email: string, password: string) => Promise<AuthResult>;
   signUp: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<AuthResult>;
+  signInAsGuest: () => void;
   supabase: typeof supabase;
 }
 
@@ -32,6 +34,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
     // Get initial session — catch errors so the splash screen never hangs
@@ -52,6 +55,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, updatedSession) => {
       setSession(updatedSession);
+      if (updatedSession) {
+        setIsGuest(false);
+      }
     });
 
     return () => {
@@ -82,6 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 
   const signOut = useCallback(async () => {
+    setIsGuest(false);
     await supabase.auth.signOut();
   }, []);
 
@@ -93,15 +100,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     [],
   );
 
+  const signInAsGuest = useCallback(() => {
+    setIsGuest(true);
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         session,
         isLoading,
+        isGuest,
         signIn,
         signUp,
         signOut,
         resetPassword,
+        signInAsGuest,
         supabase,
       }}
     >

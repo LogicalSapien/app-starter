@@ -9,8 +9,11 @@ import {
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
 import { useAuth } from "@/contexts/AuthContext";
 import { colors, spacing, radii } from "@/theme";
+
+const appVersion = Constants.expoConfig?.version ?? "0.0.0";
 
 export default function SettingsScreen() {
   const { signOut } = useAuth();
@@ -111,6 +114,8 @@ export default function SettingsScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        <Text style={styles.version}>v{appVersion}</Text>
       </View>
     </SafeAreaView>
   );
@@ -165,5 +170,12 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     paddingHorizontal: spacing.xs,
     textTransform: "uppercase",
+  },
+  version: {
+    color: colors.textMuted,
+    fontSize: 13,
+    marginTop: "auto",
+    paddingBottom: spacing.lg,
+    textAlign: "center",
   },
 });

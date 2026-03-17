@@ -3,19 +3,20 @@ import versionConfig from "./version.json";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
+  // TODO: Replace with your app name and slug
   name: "App Starter",
   slug: "app-starter",
   version: versionConfig.version,
   orientation: "portrait",
   icon: "./assets/icon.png",
-  scheme: "appstarter",
+  scheme: "appstarter", // TODO: Replace with your app's deep link scheme
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
   runtimeVersion: {
     policy: "appVersion",
   },
   updates: {
-    url: "https://u.expo.dev/your-eas-project-id",
+    url: "https://u.expo.dev/your-eas-project-id", // TODO: Replace with your EAS project ID
   },
   splash: {
     image: "./assets/splash-icon.png",
@@ -24,7 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.yourcompany.appstarter",
+    bundleIdentifier: "com.yourcompany.appstarter", // TODO: Replace with your iOS bundle ID
     buildNumber: versionConfig.ios.buildNumber,
   },
   android: {
@@ -32,7 +33,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
-    package: "com.yourcompany.appstarter",
+    package: "com.yourcompany.appstarter", // TODO: Replace with your Android package name
     versionCode: versionConfig.android.versionCode,
   },
   web: {
@@ -58,7 +59,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? "",
     supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "",
     eas: {
-      projectId: "your-eas-project-id",
+      projectId: "your-eas-project-id", // TODO: Replace with your EAS project ID from expo.dev
     },
   },
 });

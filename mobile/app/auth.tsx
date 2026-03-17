@@ -40,7 +40,7 @@ function validatePassword(password: string): string | undefined {
 }
 
 export default function AuthScreen() {
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, signInAsGuest } = useAuth();
   const [mode, setMode] = useState<AuthMode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -123,6 +123,7 @@ export default function AuthScreen() {
             "Check Your Email",
             "We sent you a confirmation link. Please verify your email to continue.",
           );
+          setMode_("login");
         }
       }
     } catch {
@@ -296,6 +297,21 @@ export default function AuthScreen() {
                 <Text style={styles.toggleText}>Back to Sign In</Text>
               </TouchableOpacity>
             )}
+
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            <TouchableOpacity
+              style={styles.guestButton}
+              onPress={signInAsGuest}
+              accessibilityLabel="Continue as guest"
+              accessibilityRole="button"
+            >
+              <Text style={styles.guestButtonText}>Continue as Guest</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -323,6 +339,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     flex: 1,
   },
+  divider: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.md,
+    marginVertical: spacing.sm,
+  },
+  dividerLine: {
+    backgroundColor: colors.divider,
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+  },
+  dividerText: {
+    color: colors.textMuted,
+    fontSize: 13,
+  },
   errorText: {
     color: colors.destructive,
     fontSize: 13,
@@ -334,6 +365,18 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: spacing.lg,
+  },
+  guestButton: {
+    alignItems: "center",
+    borderColor: colors.border,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    paddingVertical: 14,
+  },
+  guestButtonText: {
+    color: colors.textSecondary,
+    fontSize: 16,
+    fontWeight: "500",
   },
   header: {
     marginBottom: spacing.xxxl,

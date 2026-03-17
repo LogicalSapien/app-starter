@@ -51,3 +51,29 @@ export const radii = {
   lg: 16,
   full: 9999,
 } as const;
+
+export const typography = {
+  /** Size scale */
+  size: {
+    xs: 11,
+    sm: 13,
+    base: 16,
+    lg: 18,
+    xl: 22,
+    "2xl": 28,
+    "3xl": 34,
+  },
+  /** Weight scale (React Native string literals) */
+  weight: {
+    regular: "400" as const,
+    medium: "500" as const,
+    semibold: "600" as const,
+    bold: "700" as const,
+  },
+  /** Line-height multipliers */
+  leading: {
+    tight: 1.2,
+    normal: 1.4,
+    relaxed: 1.6,
+  },
+} as const;

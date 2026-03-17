@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: "react-native",
-  setupFilesAfterEnv: [],
+  preset: "jest-expo",
+  setupFilesAfterEnv: ["./jest.setup.ts"],
   transformIgnorePatterns: [
     "node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@react-navigation|@supabase|zustand)/)",
   ],
@@ -15,14 +15,5 @@ module.exports = {
     "!**/*.d.ts",
     "!**/node_modules/**",
   ],
-  // Coverage thresholds — uncomment and raise as your project grows
-  // coverageThreshold: {
-  //   global: {
-  //     branches: 50,
-  //     functions: 50,
-  //     lines: 50,
-  //     statements: 50,
-  //   },
-  // },
   testMatch: ["**/__tests__/**/*.(ts|tsx|js)", "**/*.(test|spec).(ts|tsx|js)"],
 };

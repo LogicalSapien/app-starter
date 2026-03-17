@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
@@ -19,7 +20,7 @@ const queryClient = new QueryClient({
 });
 
 function RootNavigator() {
-  const { isLoading, session } = useAuth();
+  const { isLoading, session, isGuest } = useAuth();
 
   useEffect(() => {
     if (!isLoading) {
@@ -33,7 +34,7 @@ function RootNavigator() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      {session ? (
+      {session || isGuest ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (
         <Stack.Screen
@@ -44,19 +45,22 @@ function RootNavigator() {
           }}
         />
       )}
+      <Stack.Screen name="+not-found" options={{ title: "Not Found" }} />
     </Stack>
   );
 }
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <StatusBar style="auto" />
-          <RootNavigator />
-        </AuthProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <StatusBar style="auto" />
+            <RootNavigator />
+          </AuthProvider>
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
