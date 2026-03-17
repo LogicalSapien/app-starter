@@ -7,7 +7,8 @@ import {
 } from "react-native";
 import { useState, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAuth } from "../../src/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { colors, spacing, radii } from "@/theme";
 
 export default function HomeScreen() {
   const { session } = useAuth();
@@ -48,44 +49,44 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
     elevation: 2,
-    gap: 8,
-    padding: 20,
-    shadowColor: "#000",
+    gap: spacing.sm,
+    padding: spacing.xl,
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
   },
   cardBody: {
-    color: "#6B7280",
+    color: colors.textMuted,
     fontSize: 15,
     lineHeight: 22,
   },
   cardTitle: {
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 17,
     fontWeight: "600",
   },
   container: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: colors.background,
     flex: 1,
   },
   greeting: {
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 24,
     fontWeight: "700",
   },
   header: {
-    gap: 4,
+    gap: spacing.xs,
   },
   scrollContent: {
-    gap: 20,
-    padding: 20,
+    gap: spacing.xl,
+    padding: spacing.xl,
   },
   subtitle: {
-    color: "#6B7280",
+    color: colors.textMuted,
     fontSize: 15,
   },
 });

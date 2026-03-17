@@ -1,16 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
-import { createClient } from "@supabase/supabase-js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { config } from "../config/config";
-
-const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
-});
+import { config } from "@/config/config";
+import { supabase } from "@/lib/supabase";
 
 function createApiClient(): AxiosInstance {
   const client = axios.create({
@@ -41,7 +31,8 @@ function createApiClient(): AxiosInstance {
     },
   );
 
-  // Response error handling
+  // Response error handling — uses the SAME supabase instance as AuthContext,
+  // so a 401 sign-out here updates auth state app-wide.
   client.interceptors.response.use(
     (response) => response,
     (error) => {

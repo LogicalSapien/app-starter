@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAuth } from "../../src/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { colors, spacing, radii } from "@/theme";
 
 export default function ProfileScreen() {
   const { session } = useAuth();
@@ -31,53 +32,53 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   avatarPlaceholder: {
     alignItems: "center",
-    backgroundColor: "#2563EB",
+    backgroundColor: colors.primary,
     borderRadius: 40,
     height: 80,
     justifyContent: "center",
     width: 80,
   },
   avatarText: {
-    color: "#FFFFFF",
+    color: colors.white,
     fontSize: 32,
     fontWeight: "700",
   },
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
     elevation: 2,
-    gap: 8,
-    marginTop: 8,
-    padding: 20,
-    shadowColor: "#000",
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+    padding: spacing.xl,
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
     width: "100%",
   },
   cardBody: {
-    color: "#6B7280",
+    color: colors.textMuted,
     fontSize: 15,
     lineHeight: 22,
   },
   cardTitle: {
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 17,
     fontWeight: "600",
   },
   container: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: colors.background,
     flex: 1,
   },
   content: {
     alignItems: "center",
     flex: 1,
-    gap: 16,
-    padding: 20,
+    gap: spacing.lg,
+    padding: spacing.xl,
     paddingTop: 40,
   },
   email: {
-    color: "#374151",
+    color: colors.textSecondary,
     fontSize: 16,
     fontWeight: "500",
   },

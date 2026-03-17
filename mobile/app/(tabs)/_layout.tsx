@@ -1,66 +1,51 @@
 import { Tabs } from "expo-router";
-import { Text, StyleSheet } from "react-native";
-
-type TabIconProps = {
-  label: string;
-  focused: boolean;
-};
-
-function TabIcon({ label, focused }: TabIconProps) {
-  return (
-    <Text style={[styles.icon, focused && styles.iconFocused]}>{label}</Text>
-  );
-}
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#2563EB",
-        tabBarInactiveTintColor: "#6B7280",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          borderTopColor: "#E5E7EB",
-          backgroundColor: "#FFFFFF",
+          borderTopColor: colors.divider,
+          backgroundColor: colors.surface,
         },
         headerStyle: {
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.surface,
         },
         headerShadowVisible: false,
-        headerTintColor: "#111827",
+        headerTintColor: colors.textPrimary,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ focused }) => <TabIcon label="H" focused={focused} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ focused }) => <TabIcon label="P" focused={focused} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "Settings",
-          tabBarIcon: ({ focused }) => <TabIcon label="S" focused={focused} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  icon: {
-    color: "#6B7280",
-    fontSize: 18,
-    fontWeight: "700",
-  },
-  iconFocused: {
-    color: "#2563EB",
-  },
-});

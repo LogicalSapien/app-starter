@@ -15,10 +15,20 @@ function getConfig(): AppConfig {
     );
   }
 
+  const supabaseUrl = extra.supabaseUrl ?? "";
+  const supabaseAnonKey = extra.supabaseAnonKey ?? "";
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error(
+      "[Config] EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY " +
+        "must be set. Auth will not work without them.",
+    );
+  }
+
   return {
     apiBaseUrl: extra.apiBaseUrl ?? "http://localhost:3001/api/v1",
-    supabaseUrl: extra.supabaseUrl ?? "",
-    supabaseAnonKey: extra.supabaseAnonKey ?? "",
+    supabaseUrl,
+    supabaseAnonKey,
   };
 }
 

@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAuth } from "../../src/contexts/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "@/contexts/AuthContext";
+import { colors, spacing, radii } from "@/theme";
 
 export default function SettingsScreen() {
   const { signOut } = useAuth();
@@ -27,21 +29,33 @@ export default function SettingsScreen() {
           <View style={styles.card}>
             <TouchableOpacity style={styles.row} accessibilityRole="button">
               <Text style={styles.rowLabel}>Notifications</Text>
-              <Text style={styles.rowChevron}>{">"}</Text>
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={colors.textPlaceholder}
+              />
             </TouchableOpacity>
 
             <View style={styles.divider} />
 
             <TouchableOpacity style={styles.row} accessibilityRole="button">
               <Text style={styles.rowLabel}>Appearance</Text>
-              <Text style={styles.rowChevron}>{">"}</Text>
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={colors.textPlaceholder}
+              />
             </TouchableOpacity>
 
             <View style={styles.divider} />
 
             <TouchableOpacity style={styles.row} accessibilityRole="button">
               <Text style={styles.rowLabel}>Privacy</Text>
-              <Text style={styles.rowChevron}>{">"}</Text>
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={colors.textPlaceholder}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -69,57 +83,52 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
     elevation: 2,
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 3,
   },
   container: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: colors.background,
     flex: 1,
   },
   content: {
     flex: 1,
-    gap: 24,
-    padding: 20,
+    gap: spacing.xxl,
+    padding: spacing.xl,
   },
   destructive: {
-    color: "#DC2626",
+    color: colors.destructive,
     fontWeight: "500",
   },
   divider: {
-    backgroundColor: "#E5E7EB",
+    backgroundColor: colors.divider,
     height: StyleSheet.hairlineWidth,
-    marginLeft: 16,
+    marginLeft: spacing.lg,
   },
   row: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
     paddingVertical: 14,
   },
-  rowChevron: {
-    color: "#9CA3AF",
-    fontSize: 16,
-    fontWeight: "600",
-  },
   rowLabel: {
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 16,
   },
   section: {
-    gap: 8,
+    gap: spacing.sm,
   },
   sectionTitle: {
-    color: "#6B7280",
+    color: colors.textMuted,
     fontSize: 13,
     fontWeight: "600",
     letterSpacing: 0.5,
-    paddingHorizontal: 4,
+    paddingHorizontal: spacing.xs,
     textTransform: "uppercase",
   },
 });

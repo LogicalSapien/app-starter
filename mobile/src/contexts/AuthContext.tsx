@@ -6,18 +6,8 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import { createClient, Session, AuthError } from "@supabase/supabase-js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { config } from "../config/config";
-
-const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
-});
+import { Session, AuthError } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
 
 interface AuthResult {
   error: AuthError | null;
@@ -43,11 +33,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      setSession(initialSession);
-      setIsLoading(false);
-    });
+    // Get initial session — catch errors so the splash screen never hangs
+    supabase.auth
+      .getSession()
+      .then(({ data: { session: initialSession } }) => {
+        setSession(initialSession);
+      })
+      .catch((err) => {
+        console.warn("[Auth] Failed to restore session:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     // Listen for auth state changes
     const {

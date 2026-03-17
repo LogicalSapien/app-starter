@@ -12,7 +12,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAuth } from "../src/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { colors, spacing, radii } from "@/theme";
 
 type AuthMode = "login" | "signup";
 
@@ -93,7 +94,7 @@ export default function AuthScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="you@example.com"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colors.textPlaceholder}
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
@@ -109,7 +110,7 @@ export default function AuthScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Your password"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colors.textPlaceholder}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -124,7 +125,7 @@ export default function AuthScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Confirm your password"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colors.textPlaceholder}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   secureTextEntry
@@ -142,7 +143,7 @@ export default function AuthScreen() {
               accessibilityRole="button"
             >
               {isSubmitting ? (
-                <ActivityIndicator color="#FFFFFF" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <Text style={styles.buttonText}>
                   {mode === "login" ? "Sign In" : "Sign Up"}
@@ -174,35 +175,35 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "#2563EB",
-    borderRadius: 8,
-    marginTop: 8,
+    backgroundColor: colors.primary,
+    borderRadius: radii.sm,
+    marginTop: spacing.sm,
     paddingVertical: 14,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: colors.white,
     fontSize: 16,
     fontWeight: "600",
   },
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.surface,
     flex: 1,
   },
   form: {
-    gap: 16,
+    gap: spacing.lg,
   },
   header: {
-    marginBottom: 32,
+    marginBottom: spacing.xxxl,
   },
   input: {
-    backgroundColor: "#F9FAFB",
-    borderColor: "#D1D5DB",
-    borderRadius: 8,
+    backgroundColor: colors.background,
+    borderColor: colors.border,
+    borderRadius: radii.sm,
     borderWidth: 1,
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -214,31 +215,31 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: "#374151",
+    color: colors.textSecondary,
     fontSize: 14,
     fontWeight: "600",
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xxl,
   },
   subtitle: {
-    color: "#6B7280",
+    color: colors.textMuted,
     fontSize: 16,
   },
   title: {
-    color: "#111827",
+    color: colors.textPrimary,
     fontSize: 28,
     fontWeight: "700",
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   toggleButton: {
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: spacing.md,
   },
   toggleText: {
-    color: "#2563EB",
+    color: colors.primary,
     fontSize: 14,
     fontWeight: "500",
   },
